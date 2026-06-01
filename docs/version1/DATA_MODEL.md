@@ -1,4 +1,4 @@
-# Data Model (v1)
+# Data Model (version1)
 
 The authoritative data model: every entity, its fields, and the invariants on those fields.
 This is the contract between components and between phases of work.

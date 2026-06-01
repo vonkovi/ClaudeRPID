@@ -1,4 +1,4 @@
-# v1 Status
+# version1 Status
 
 _Update this file at the start and end of every session. This is the first doc to read when resuming work._
 

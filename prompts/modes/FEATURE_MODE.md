@@ -7,7 +7,7 @@
 ## Entry Checklist
 
 Before starting Session 1:
-- [ ] Read the feature request description. If it describes existing broken behavior rather than new behavior, use ISSUE mode instead.
+- [ ] Read the feature request description. If it describes existing broken behavior rather than new behavior, use ISSUE_MODE instead.
 - [ ] Confirm phase and task ID (e.g., `phase1_task02`)
 - [ ] Confirm correct branch: `[username]/phase[N]_task[NN]_[slug]`
 - [ ] Read CLAUDE.md
@@ -42,8 +42,8 @@ Before starting Session 1:
 
 | Session | Prompt | Output | Gate |
 |---------|--------|--------|------|
-| N | `prompts/DEBUG_RESEARCH_PROMPT.md` | `ITER[M]/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md` | User reviews |
-| N+1 | `prompts/DEBUG_PLANNING_PROMPT.md` | `ITER[M]/DEBUG_PLAN_PHASE[N]_TASK[NN].md` | User reviews |
+| N | `prompts/DEBUG_RESEARCH_PROMPT.md` | `ITERATION[M]/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md` | User reviews |
+| N+1 | `prompts/DEBUG_PLANNING_PROMPT.md` | `ITERATION[M]/DEBUG_PLAN_PHASE[N]_TASK[NN].md` | User reviews |
 | N+2 | `prompts/DEBUG_IMPLEMENTATION_PROMPT.md` | `fix: phase[N]_task[NN]_iter[M]` commit | User reviews diff → back to Track 3 |
 
 After two debug iterations without passing: STOP. Escalate. Do not attempt a third without explicit user instruction.
@@ -61,7 +61,7 @@ After two debug iterations without passing: STOP. Escalate. Do not attempt a thi
 - The gate is the output document. The user reads it at their own pace, approves or redirects.
 - The user can run unrelated tasks on other branches in parallel between gates.
 - A redirect at any gate propagates backward to the earliest affected step — a planning redirect invalidates the implementation; a research redirect invalidates the plan.
-- Never merge to `phase[N]` without Track 3 passing and the PR approved by collab_integrator.
+- Never merge to `phase[N]` without Track 3 passing locally, the required CI check green, and the PR approved by collab_integrator.
 
 ---
 

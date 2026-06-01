@@ -23,8 +23,8 @@ Copy and paste the block below into a Claude Code session on your task branch.
 You are entering the Research (R) phase of the RPID loop.
 
 Task ID:    [PHASE[N]_TASK[NN] — e.g. PHASE1_TASK02]
-Task slug:  [slug from PHASE[N]_MEMBER_TASK.md — e.g. god_mode_map]
-Branch:     [your branch — e.g. yvonkim/phase1_task02_god_mode_map]
+Task slug:  [slug from PHASE[N]_MEMBER_TASK.md — e.g. core_engine]
+Branch:     [your branch — e.g. yourname/phase1_task02_core_engine]
 Output doc: docs/[version]/phases/phase[N]/task[NN]_[slug]/RESEARCH_PHASE[N]_TASK[NN].md
 
 ---
@@ -38,7 +38,7 @@ Required reading:
 1. docs/[version]/STATUS.md — current phase, blockers, open questions
 2. docs/[version]/DECISIONS.md — all locked and open ADRs
 3. docs/[version]/ARCHITECTURE.md — system architecture and key invariants
-4. docs/[version]/CLASS_MODEL.md (or equivalent) — authoritative data model
+4. docs/[version]/DATA_MODEL.md (or equivalent) — authoritative data model
 5. docs/[version]/PLANNING.md — your task's items (find sub-phase [N][a/b/c])
 6. docs/[version]/phases/phase[N]/PHASE[N]_MEMBER_TASK.md — your task assignment,
    ownership zone, and frozen contract files list
@@ -95,11 +95,11 @@ b) TECHNOLOGY / LIBRARY AUDIT — if this item requires a technology or approach
    write "N/A — no choice required."
 
 c) ARCHITECTURAL FIT — does this item fit cleanly within the existing architecture?
-   Are there tensions with ARCHITECTURE.md invariants or CLASS_MODEL.md definitions?
+   Are there tensions with ARCHITECTURE.md invariants or DATA_MODEL.md definitions?
    If yes, document the tension specifically (which invariant, which field, which rule).
 
 d) INTERFACE QUESTIONS — if this item produces or consumes an interface (API endpoint,
-   WebSocket message type, Firestore schema, shared TypeScript type), document:
+   API endpoint, message schema, shared type definition), document:
    - Current state: what does that interface look like today (if it exists)?
    - Required state: what does it need to look like after this task?
    - Gap: what must change?

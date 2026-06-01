@@ -33,6 +33,8 @@ ALL tests pass:
   - Run number and date
   - Verbatim output
   - Outcome: PASS
+- NOTE: the same suite also runs as a required CI check on the PR. A local PASS with a
+  red CI check is NOT a pass — the PR cannot merge until CI is green.
 - Use DOCUMENTATION_PROMPT.md in a new session for the docs commit + PR.
 - Stop.
 

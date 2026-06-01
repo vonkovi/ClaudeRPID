@@ -34,8 +34,8 @@ STEP 4: State Root Cause
 One sentence: "Root cause is [X] because [evidence]."
 No hedging. If you can't write it in one sentence, you haven't confirmed it.
 
-STEP 5: Write ITER[M]/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md
-In docs/[version]/phases/phase[N]/task[NN]_[slug]/ITER[M]/.
+STEP 5: Write ITERATION[M]/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md
+In docs/[version]/phases/phase[N]/task[NN]_[slug]/ITERATION[M]/.
 Sections: Symptom (verbatim) | Hypotheses | Diagnostic results | Root cause.
 
 STEP 6: Checkpoint

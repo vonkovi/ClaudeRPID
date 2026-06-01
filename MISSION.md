@@ -2,7 +2,7 @@
 
 > Optional file. Keep it for goal-driven, research, or metric-anchored projects. Delete it for
 > small utilities where the README says enough. This document is **version-agnostic** —
-> implementation lives in `docs/v1/`.
+> implementation lives in `docs/version1/`.
 
 {{Two-to-three sentences stating the goal at the highest level — the thing that would still be
 true across a complete rewrite.}}

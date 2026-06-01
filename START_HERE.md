@@ -19,8 +19,8 @@ or a library.
 | `README.md` | Human-facing project front page. |
 | `MISSION.md` | Version-agnostic statement of purpose and success metrics (optional — delete if not a goal-driven/research project). |
 | `prompts/` | The RPID prompt library. Copy-paste these into Claude sessions to run each step of any task. Already generic. |
-| `docs/v1/` | The living documentation backbone — `STATUS`, `DECISIONS`, `ARCHITECTURE`, `DATA_MODEL`, `PLANNING`, `EXPERIMENTS`, `FUTURE_IMPLEMENTATIONS`. |
-| `docs/v1/phases/` | Phase + task scaffolding for the collaboration model. |
+| `docs/version1/` | The living documentation backbone — `STATUS`, `DECISIONS`, `ARCHITECTURE`, `DATA_MODEL`, `PLANNING`, `EXPERIMENTS`, `FUTURE_IMPLEMENTATIONS`. |
+| `docs/version1/phases/` | Phase + task scaffolding for the collaboration model. |
 | `src/` | Your code root. Rename to `frontend/`, `backend/`, `app/`, etc. as needed. |
 
 ---
@@ -37,9 +37,9 @@ doc to be concrete and project-specific. This is the intended entry point.
 
 Work top-down:
 1. `CLAUDE.md` — replace every `{{PLACEHOLDER}}`. Start with **Project** and **North Star**.
-2. `docs/v1/STATUS.md` — set Current Phase, North Star, and Next Actions.
-3. `docs/v1/PLANNING.md` — lay out your phases.
-4. `docs/v1/DECISIONS.md` — record your first ADR.
+2. `docs/version1/STATUS.md` — set Current Phase, North Star, and Next Actions.
+3. `docs/version1/PLANNING.md` — lay out your phases.
+4. `docs/version1/DECISIONS.md` — record your first ADR.
 5. Fill `ARCHITECTURE.md` and `DATA_MODEL.md` as the design solidifies.
 
 ---
@@ -56,11 +56,9 @@ Work top-down:
 
 ## A note on the prompt library
 
-The `prompts/*.md` files are battle-tested and copied verbatim from the origin project.
-They are stack-agnostic, but a few inline **examples** inside `RESEARCH_PROMPT.md` and
-`PLANNING_PROMPT.md` reference the origin domain (e.g. a `world.json` config file or a
-WebSocket message type). Read those as illustrations, not requirements — substitute your
-own project's nouns. The headers of those prompts already say as much.
+The `prompts/*.md` files are battle-tested and fully stack-agnostic. Any example nouns inside
+them (file names, field names, branch slugs) are generic placeholders — substitute your own
+project's nouns as you go. The header of each prompt says as much.
 
 ---
 

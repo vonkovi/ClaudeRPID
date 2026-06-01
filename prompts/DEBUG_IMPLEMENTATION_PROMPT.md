@@ -10,8 +10,8 @@ Do NOT refactor. Do NOT change tests to match wrong behavior.
 STEP 0: Read CLAUDE.md. Confirm build commands.
 
 STEP 1: Load Context
-- ITER[M]/DEBUG_PLAN_PHASE[N]_TASK[NN].md (source of truth for this session)
-- ITER[M]/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md (root cause and evidence)
+- ITERATION[M]/DEBUG_PLAN_PHASE[N]_TASK[NN].md (source of truth for this session)
+- ITERATION[M]/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md (root cause and evidence)
 - Every file listed in DEBUG_PLAN as fix targets
 
 STEP 2: Pre-Flight

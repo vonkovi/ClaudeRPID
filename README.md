@@ -8,7 +8,7 @@
 
 ## Status
 
-{{One line: current phase and what's working today. Keep `docs/v1/STATUS.md` authoritative;
+{{One line: current phase and what's working today. Keep `docs/version1/STATUS.md` authoritative;
 this is just a pointer.}}
 
 | Phase | Description | Status |
@@ -24,7 +24,7 @@ this is just a pointer.}}
 ```
 src/              ← {{primary code root}}
 prompts/          ← RPID prompt library (Claude Code workflow)
-docs/v1/          ← architecture, data model, planning, decisions, status
+docs/version1/          ← architecture, data model, planning, decisions, status
 CLAUDE.md         ← guidance for Claude Code
 MISSION.md        ← purpose and metric definitions
 ```
@@ -45,9 +45,9 @@ MISSION.md        ← purpose and metric definitions
 
 | File | Contents |
 |------|----------|
-| [`docs/v1/STATUS.md`](docs/v1/STATUS.md) | Current phase, blockers, next actions |
-| [`docs/v1/ARCHITECTURE.md`](docs/v1/ARCHITECTURE.md) | System architecture and key invariants |
-| [`docs/v1/DATA_MODEL.md`](docs/v1/DATA_MODEL.md) | Authoritative data model |
-| [`docs/v1/PLANNING.md`](docs/v1/PLANNING.md) | Phased checklist with numbered tasks |
-| [`docs/v1/DECISIONS.md`](docs/v1/DECISIONS.md) | Architectural decision log (ADRs) |
+| [`docs/version1/STATUS.md`](docs/version1/STATUS.md) | Current phase, blockers, next actions |
+| [`docs/version1/ARCHITECTURE.md`](docs/version1/ARCHITECTURE.md) | System architecture and key invariants |
+| [`docs/version1/DATA_MODEL.md`](docs/version1/DATA_MODEL.md) | Authoritative data model |
+| [`docs/version1/PLANNING.md`](docs/version1/PLANNING.md) | Phased checklist with numbered tasks |
+| [`docs/version1/DECISIONS.md`](docs/version1/DECISIONS.md) | Architectural decision log (ADRs) |
 | [`CLAUDE.md`](CLAUDE.md) | How Claude Code (and the team) works in this repo |

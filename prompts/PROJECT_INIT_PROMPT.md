@@ -42,7 +42,7 @@ Examples of good North Stars:
 Create the following folder structure (empty folders get a .gitkeep):
 
   docs/
-    version2/               <- or v1, v2, etc. — whatever versioning scheme fits
+    version1/               <- or v2, v3, etc. — whatever versioning scheme fits
       phases/
         .gitkeep
     legacy/                 <- only if there is a prior version to archive
@@ -111,7 +111,7 @@ Rules:
 ### docs/[version]/ARCHITECTURE.md
 
 The high-level system architecture. This doc explains the "why" of each major
-subsystem and how they interact — not implementation details (those go in CLASS_MODEL.md
+subsystem and how they interact — not implementation details (those go in DATA_MODEL.md
 or equivalent). Must cover:
 
 - The core loop / main flow (how does the system process a unit of work end-to-end?)
@@ -122,7 +122,7 @@ or equivalent). Must cover:
 - The cost model / performance model — how does the system scale, and what are the
   expensive operations?
 
-### docs/[version]/CLASS_MODEL.md (or SCHEMA.md / DATA_MODEL.md)
+### docs/[version]/DATA_MODEL.md (or CLASS_MODEL.md / SCHEMA.md)
 
 The authoritative data model. Every entity, its fields, and the invariants on those
 fields. This is the contract between frontend and backend, and between phases of work.
@@ -192,7 +192,7 @@ For each phase in PLANNING.md, create:
         RESEARCH_PHASE[N]_TASK[NN].md
         PLANNING_PHASE[N]_TASK[NN].md
         ITERATION1/                 <- only created if debugging is needed
-          DEBUGGING_RESEARCH_PHASE[N]_TASK[NN].md
+          DEBUG_RESEARCH_PHASE[N]_TASK[NN].md
 
 Naming conventions (strictly enforced):
 - Phase folders: phase0, phase1, phase2 — no leading zeros on phase number
@@ -240,7 +240,7 @@ PHASE_MEMBER_TASK_TEMPLATE.md must contain:
   ## Phase Completion Checklist
   - [ ] All task items checked off
   - [ ] All RPID docs committed as permanent artifacts
-  - [ ] Malleable docs updated (ARCHITECTURE.md, CLASS_MODEL.md, STATUS.md, PLANNING.md)
+  - [ ] Malleable docs updated (ARCHITECTURE.md, DATA_MODEL.md, STATUS.md, PLANNING.md)
   - [ ] No pending contract change requests
   - [ ] Admin sign-off
   - [ ] phase[#] merged to testing
@@ -264,7 +264,7 @@ Task block format inside PHASE[N]_MEMBER_TASK.md:
   **RPID docs:**
   - [ ] RESEARCH_PHASE[N]_TASK[NN].md
   - [ ] PLANNING_PHASE[N]_TASK[NN].md
-  - [ ] ITERATION1/DEBUGGING_RESEARCH_PHASE[N]_TASK[NN].md (if needed)
+  - [ ] ITERATION1/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md (if needed)
 
   **Commits (two per task, always in this order, never combined):**
   - [ ] impl: phase[N]_task[NN]   <- code changes ONLY
@@ -310,7 +310,7 @@ It must contain the following sections (adapt content to the project):
   | docs/[version]/STATUS.md | Current phase, blockers, next actions — read at start, update at end |
   | docs/[version]/DECISIONS.md | ADR log — authoritative for all locked decisions |
   | docs/[version]/ARCHITECTURE.md | [what it covers] |
-  | docs/[version]/CLASS_MODEL.md | [authoritative for all backend implementation] |
+  | docs/[version]/DATA_MODEL.md | [authoritative for all backend implementation] |
   | docs/[version]/PLANNING.md | [N]-phase checklist with numbered tasks |
 
   ### Build/Run Commands
@@ -356,7 +356,9 @@ It must contain the following sections (adapt content to the project):
   6. Contract files — shared contracts need collab_integrator before any edit.
 
   ### RPID Loop
-  [Describe R→P→I→D in detail including the two-commit rule]
+  [Describe R→P→I→D in detail including the two-commit rule and the required CI test gate
+   on PRs (Track 3) — the full test suite runs as a required GitHub Actions check on every
+   PR; author the gate workflow at phase 1 start]
 
   ### Document Classification
   [Non-malleable / Malleable / Phase-scoped / Task-scoped]
@@ -392,7 +394,7 @@ After creating all files, run through this checklist:
 - [ ] docs/[version]/STATUS.md exists and has all 10 required sections
 - [ ] docs/[version]/DECISIONS.md exists with at least one ADR
 - [ ] docs/[version]/ARCHITECTURE.md exists
-- [ ] docs/[version]/CLASS_MODEL.md (or equivalent) exists
+- [ ] docs/[version]/DATA_MODEL.md (or equivalent) exists
 - [ ] docs/[version]/PLANNING.md exists with at least Phase 0 fully specified
 - [ ] docs/[version]/EXPERIMENTS.md exists
 - [ ] docs/[version]/FUTURE_IMPLEMENTATIONS.md exists
@@ -401,6 +403,7 @@ After creating all files, run through this checklist:
 - [ ] Branch structure: main → testing → phase0 (or username/phase0)
 - [ ] No application code written yet (Phase 0 is planning, not coding)
 - [ ] STATUS.md "Next Actions" section has a clear first action
+- [ ] Required CI test-gate workflow planned for phase 1 (Track 3 gate; author it at phase 1 start)
 
 ---
 

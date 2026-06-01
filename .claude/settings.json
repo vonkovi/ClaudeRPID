@@ -1,0 +1,11 @@
+{
+  "// note": "Project-scoped Claude Code settings. Add tool permissions here to pre-approve common, safe operations so sessions stop prompting for them. Personal/uncommitted overrides go in .claude/settings.local.json (gitignored). Remove this note key before use.",
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+name: Claude Code
+
+# Powers ISSUE_MODE (prompts/modes/ISSUE_MODE.md) and @claude mentions on issues/PRs.
+# Requires repo secret CLAUDE_CODE_OAUTH_TOKEN. Generate it with `claude setup-token`
+# (or the GitHub App install flow) and add it under Settings -> Secrets -> Actions.
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Allows Claude to read CI results on PRs
+          additional_permissions: |
+            actions: read
+
+          # Optional: a fixed prompt. If omitted, Claude follows the comment that tagged it.
+          # prompt: 'Update the PR description to summarize the changes.'
+
+          # Optional: restrict or extend tools. See
+          # https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # claude_args: '--allowed-tools Bash(gh pr *)'

@@ -45,7 +45,7 @@ Required reading:
 2. docs/[version]/STATUS.md — confirm no new blockers or decisions since research
 3. docs/[version]/DECISIONS.md — confirm locked ADRs have not changed since research
 4. docs/[version]/ARCHITECTURE.md — key invariants your plan must not violate
-5. docs/[version]/CLASS_MODEL.md — authoritative data model; your plan's output
+5. docs/[version]/DATA_MODEL.md — authoritative data model; your plan's output
    must be consistent with every field and type defined here
 6. All frozen contract files listed in PHASE[N]_MEMBER_TASK.md — read their current
    state so you know exactly what you are working with
@@ -154,7 +154,7 @@ or system-observable behaviors that must work after this task is complete. For e
 state the behavior and how to observe it.
 
 INTEGRATION VERIFICATION — how does this interact with adjacent systems (backend,
-WebSocket, other UI panels, Pub/Sub topics, Firestore)? What must be true at every
+APIs, other UI panels, message queues, the database)? What must be true at every
 integration boundary? For each boundary: state the expected behavior.
 
 REGRESSION CHECK — list the existing behaviors that must NOT break. For each:
@@ -186,8 +186,8 @@ For each affected frozen file, prepare:
   [For each other task in this phase, list every field, type, or behavior they reference
    that will change. Be exhaustive — semantic breakage (code reading a renamed field)
    will not surface as a git conflict. It must be caught by the impacted member manually.
-   "Task02 reads world.json.agents[].sensors — this field is being renamed to
-   agent_sensors. Task02 owner must update all reads in [specific files]."]
+   "Task02 reads config.users[].roles — this field is being renamed to
+   user_roles. Task02 owner must update all reads in [specific files]."]
 
 Note: these are DRAFTS. File them with collab_integrator before starting STEP 1 of
 the implementation. Do not implement any contract file changes until collab_integrator
@@ -265,7 +265,7 @@ DO NOT write any code. DO NOT create any source files. Wait for user review.
 - Do NOT write any code during planning. Pseudocode is allowed ONLY to clarify a
   non-obvious interface or function signature — one line maximum. Not a block.
 - Do NOT proceed to implementation if any DG is unresolved.
-- Do NOT modify malleable docs (ARCHITECTURE.md, CLASS_MODEL.md, STATUS.md, PLANNING.md)
+- Do NOT modify malleable docs (ARCHITECTURE.md, DATA_MODEL.md, STATUS.md, PLANNING.md)
   during the planning phase — those happen in the docs commit after implementation.
 - If a step in your plan would violate a locked ADR, STOP and raise it before writing
   the rest of the plan.

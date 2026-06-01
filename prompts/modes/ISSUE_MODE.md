@@ -2,7 +2,7 @@
 
 **Type: Remote trigger. Non-interactive.** This mode fires automatically when a GitHub issue is assigned to Claude. It reads the issue from GitHub, runs all tracks autonomously without human gates, and posts results back to the issue. There are no interactive sessions — the entire run is one continuous autonomous execution.
 
-For interactive bug fixes initiated by a human, use FEATURE_REQUEST mode instead and skip Track 1.
+For interactive bug fixes initiated by a human, use FEATURE_MODE instead and skip Track 1.
 
 ---
 
@@ -61,8 +61,8 @@ Open a draft PR with the reproduction tests and stop.
 
 Run inline — no separate sessions:
 
-1. **Debug Research:** Research the root cause. Minimum two hypotheses. Run diagnostics. Confirm root cause in one sentence. Write `ITER1/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md`.
-2. **Debug Planning:** Plan the minimal fix. Write `ITER1/DEBUG_PLAN_PHASE[N]_TASK[NN].md`.
+1. **Debug Research:** Research the root cause. Minimum two hypotheses. Run diagnostics. Confirm root cause in one sentence. Write `ITERATION1/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md`.
+2. **Debug Planning:** Plan the minimal fix. Write `ITERATION1/DEBUG_PLAN_PHASE[N]_TASK[NN].md`.
 3. **Debug Implementation:** Implement fix. Commit: `fix: phase[N]_task[NN]_iter1`.
 
 ### Track 3 — Verify Fix

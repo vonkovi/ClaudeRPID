@@ -16,6 +16,7 @@ target/
 .env
 .env.*
 *.local
+.claude/settings.local.json
 
 # Editor / OS
 .DS_Store

@@ -7,6 +7,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 > Keep the **Collaboration** section close to verbatim — it is the reusable methodology.
 > The fastest way to fill this in is to run `prompts/PROJECT_INIT_PROMPT.md` in a fresh session.
 
+## Project Settings
+
+_Project-level feature flags — read first. This template ships in **SOLO mode**: one developer
++ Claude. The **Collaboration** section below is written for a team; in SOLO mode the
+team-coordination machinery is **DORMANT, not removed**. To change how the project operates,
+flip a flag here — **do not delete the underlying section.**_
+
+**Mode: SOLO** — admin: `{{your-username}}`.
+
+| Feature | Flag | Solo behavior |
+|---------|------|---------------|
+| RPID loop | **ON** | Unchanged — core rigor, independent of team size |
+| No-lost / no-outdated context (Golden Rules 3–4) | **ON** | Unchanged — the most important rules |
+| Permanent task artifacts | **ON** | Unchanged |
+| Document classification (non-malleable / malleable / task-scoped) | **ON** | Unchanged |
+| Commit discipline (`impl`/`test`/`fix`/`docs`) | **ON** | Unchanged |
+| CI test gate (Track 3) | **ON** | Your only second reviewer — more valuable solo |
+| Branch hierarchy (`main`/`testing`/`phase#`/`task#`) | **ON** | Unchanged |
+| User review gates | **ON** | You are the reviewer; relaxed only by ISSUE_MODE / OVERNIGHT_MODE |
+| Three-role model (Admin / Collab Integrator / Member) | **DORMANT** | You are all three; ignore role separation |
+| Shared Contract Change Process (`REQUEST#` docs) | **DORMANT** | Edit shared/contract files directly; just weigh ripple effects first |
+| "Announce to collab_integrator" / "all members pull" steps | **DORMANT** | No-op solo — skip them |
+| Task & doc *isolation* (who-may-touch-what, Golden Rules 1–2) | **DORMANT** | You own everything. The `task#/` folder structure + RPID artifact placement stay **ON** — only the cross-member restriction is off |
+| `PHASE#_MEMBER_TASK.md` role/ownership assignment | **DORMANT** | Task *breakdown* still useful; skip the role / ownership / frozen-contract columns |
+
+**Reactivation rule:** a DORMANT feature becomes authoritative again the instant its flag flips
+to **ON** (e.g. a second contributor joins). The Collaboration sections are preserved verbatim
+for exactly that reason — SOLO → TEAM: flip the flags, re-read Collaboration, and the full
+process is restored with no rewriting.
+
 ## Project
 
 {{ONE-TO-THREE SENTENCES: what this project is, and — importantly — what it is NOT
@@ -23,8 +53,8 @@ Every architectural decision is weighed against this.
 ```
 src/              ← {{primary code root — rename to frontend/ backend/ app/ as needed}}
 prompts/          ← RPID prompt library (modes/ + per-track prompts)
-docs/v1/          ← architecture, data model, planning, status — the living doc backbone
-docs/v1/phases/   ← phase + task scaffolding for the collaboration model
+docs/version1/          ← architecture, data model, planning, status — the living doc backbone
+docs/version1/phases/   ← phase + task scaffolding for the collaboration model
 legacy/           ← {{archived prior version, if any — delete if greenfield}}
 CLAUDE.md         ← this file (admin-only)
 README.md         ← human-facing front page (admin-only)
@@ -32,30 +62,30 @@ MISSION.md        ← purpose + success metrics (admin-only; optional)
 ```
 
 State explicitly which folders are **active development** vs **archived**. Active: `src/`,
-`docs/v1/`. Archived: `legacy/` ({{if present}}).
+`docs/version1/`. Archived: `legacy/` ({{if present}}).
 
 ---
 
-## Active Development: v1
+## Active Development: version1
 
 **{{Current phase status in one sentence — e.g. "Phase 0 complete. Phase 1 (Core
 Implementation) is next."}}**
 
-Read `docs/v1/STATUS.md` first when resuming work — it tracks current phase, blockers, and
+Read `docs/version1/STATUS.md` first when resuming work — it tracks current phase, blockers, and
 next actions. **Update it at the end of every session too.**
 
 ### Key docs
 
 | File | Purpose |
 |------|---------|
-| `docs/v1/STATUS.md` | Current phase, blockers, next actions — **read at session start, update at session end** |
-| `docs/v1/DECISIONS.md` | Architectural Decision Log (ADR format) — authoritative for all locked decisions |
-| `docs/v1/ARCHITECTURE.md` | System architecture, core loop, key invariants, cost/performance model |
-| `docs/v1/DATA_MODEL.md` | Authoritative data model / schema — when this and the code disagree, fix the code |
-| `docs/v1/PLANNING.md` | Phased implementation checklist with numbered tasks |
-| `docs/v1/EXPERIMENTS.md` | Pre-registered hypotheses / benchmarks (optional — research or perf projects) |
-| `docs/v1/FUTURE_IMPLEMENTATIONS.md` | Explicitly deferred features — do not implement without admin sign-off |
-| `docs/v1/phases/PHASE_MEMBER_TASK_TEMPLATE.md` | Template for generating `PHASE#_MEMBER_TASK.md` at phase start |
+| `docs/version1/STATUS.md` | Current phase, blockers, next actions — **read at session start, update at session end** |
+| `docs/version1/DECISIONS.md` | Architectural Decision Log (ADR format) — authoritative for all locked decisions |
+| `docs/version1/ARCHITECTURE.md` | System architecture, core loop, key invariants, cost/performance model |
+| `docs/version1/DATA_MODEL.md` | Authoritative data model / schema — when this and the code disagree, fix the code |
+| `docs/version1/PLANNING.md` | Phased implementation checklist with numbered tasks |
+| `docs/version1/EXPERIMENTS.md` | Pre-registered hypotheses / benchmarks (optional — research or perf projects) |
+| `docs/version1/FUTURE_IMPLEMENTATIONS.md` | Explicitly deferred features — do not implement without admin sign-off |
+| `docs/version1/phases/PHASE_MEMBER_TASK_TEMPLATE.md` | Template for generating `PHASE#_MEMBER_TASK.md` at phase start |
 
 ### Build / Run commands
 
@@ -124,13 +154,13 @@ main                              ← most stable version
 
 - Each level only pulls from the one above it.
 - Members branch from `phase#` — never from `testing` or `main` directly.
-- `phase#` is deleted after merge. The permanent artifact is `docs/v1/phases/phase#/` — never delete that folder.
+- `phase#` is deleted after merge. The permanent artifact is `docs/version1/phases/phase#/` — never delete that folder.
 - **Branch naming:** `username/phase#_task[NN]_[slug]` — zero-padded two-digit task ID + slug.
 
 ### Golden Rules
 
 1. **Task isolation** — each member only does tasks assigned in `PHASE#_MEMBER_TASK.md`.
-2. **Doc isolation** — each member only writes docs in `docs/v1/phases/phase#/task#/`.
+2. **Doc isolation** — each member only writes docs in `docs/version1/phases/phase#/task#/`.
 3. **No lost context** — all task-scoped RPID docs are permanent artifacts. Deleting any of them violates this rule.
 4. **No outdated context** — changes must be reflected in documentation. Status stays current.
 5. **RPID loop** — all work follows the four-track sequence. See below.
@@ -144,15 +174,21 @@ session. The user reviews and approves at every gate before the next session beg
 ```
 Track 1 — Feature:   R(init) → P(init) → I(init)
 Track 2 — Tests:     R(test) → P(test) → I(test)
-Track 3 — Run:       run tests
-                     ┌─ all pass → docs commit → PR → next task
-                     └─ any fail → Track 4
+Track 3 — Run:       run tests locally + required CI check on the PR
+                     ┌─ all pass (local + CI green) → docs commit → PR merged → next task
+                     └─ any fail (local or CI) → Track 4
 Track 4 — Debug:     R(debug) → P(debug) → I(debug) → back to Track 3
   (repeating)        escalate after two iterations without passing
 ```
 
+**CI test gate (Track 3):** the full suite also runs as a *required* GitHub Actions check on
+every PR to `phase#`. A local pass with a red CI check is **not** a pass — the PR cannot merge
+until CI is green. This gate is the project's to create: author the workflow at phase 1 start.
+The shipped `.github/workflows/` contains only the Claude Code action and the auto-review — not
+the test gate.
+
 Each step has a copy-paste prompt in `prompts/`. Pick a **mode** first
-(`prompts/modes/FEATURE_REQUEST.md`, `ISSUE.md`, or `OVERNIGHT_RUN.md`), then run the track
+(`prompts/modes/FEATURE_MODE.md`, `ISSUE_MODE.md`, or `OVERNIGHT_MODE.md`), then run the track
 prompts as the mode directs.
 
 **Commits per task — in order, never combined:**
@@ -166,19 +202,44 @@ prompts as the mode directs.
 
 The `fix:` commit is absent if Track 3 passes on the first run. Every other commit is mandatory.
 
+### RPID Prompt Library
+
+`prompts/` has two layers: **modes** (entry points — pick one per task) and **track prompts**
+(one session each). Bootstrap a blank repo with `prompts/PROJECT_INIT_PROMPT.md`.
+
+| Mode (pick one per task) | When to use |
+|--------------------------|-------------|
+| `prompts/modes/FEATURE_MODE.md` | New feature; user reviews each gate (interactive) |
+| `prompts/modes/ISSUE_MODE.md` | GitHub issue assigned to Claude; autonomous, no human gates |
+| `prompts/modes/OVERNIGHT_MODE.md` | Multi-task list; autonomous with stronger guardrails |
+
+| Track prompt | Track | Use |
+|--------------|-------|-----|
+| `RESEARCH_PROMPT.md` | 1 — R | Feature research |
+| `PLANNING_PROMPT.md` | 1 — P | Feature planning |
+| `IMPLEMENTATION_PROMPT.md` | 1 — I | Feature implementation |
+| `TEST_RESEARCH_PROMPT.md` | 2 — R | Adversarial test research |
+| `TEST_PLANNING_PROMPT.md` | 2 — P | Test-case planning |
+| `TEST_IMPLEMENTATION_PROMPT.md` | 2 — I | Write test code |
+| `TESTING_PROMPT.md` | 3 — Run | Run full suite + pass/fail decision |
+| `DEBUG_RESEARCH_PROMPT.md` | 4 — R | Root-cause research |
+| `DEBUG_PLANNING_PROMPT.md` | 4 — P | Fix planning |
+| `DEBUG_IMPLEMENTATION_PROMPT.md` | 4 — I | Implement fix |
+| `DOCUMENTATION_PROMPT.md` | After pass | Malleable doc updates + docs commit |
+
 ### Document Classification
 
 **Non-malleable** (admin-only, repo root): `CLAUDE.md`, `README.md`, `MISSION.md`. No Claude
 edits these unilaterally.
 
-**Malleable** (high-level, `docs/v1/`): `STATUS.md`, `DECISIONS.md`, `ARCHITECTURE.md`,
+**Malleable** (high-level, `docs/version1/`): `STATUS.md`, `DECISIONS.md`, `ARCHITECTURE.md`,
 `DATA_MODEL.md`, `PLANNING.md`, `EXPERIMENTS.md`, `FUTURE_IMPLEMENTATIONS.md`. Updated only
 after implementation is committed, after announcing to collab_integrator, after all members
 pull. These are the `docs:` commit targets.
 
-**Phase-scoped** (`docs/v1/phases/phase#/`): `PHASE#_MEMBER_TASK.md` — admin-only edits.
+**Phase-scoped** (`docs/version1/phases/phase#/`): `PHASE#_MEMBER_TASK.md` — admin-only edits.
 
-**Task-scoped** (`docs/v1/phases/phase#/task#/`): all RPID docs (RESEARCH, PLANNING,
+**Task-scoped** (`docs/version1/phases/phase#/task#/`): all RPID docs (RESEARCH, PLANNING,
 TEST_RESEARCH, TEST_PLAN, SESSION_LOG, DEBUG_RESEARCH, DEBUG_PLAN). Permanent artifacts —
 each member writes only to their own task folder.
 
@@ -195,6 +256,21 @@ API/message type, a DB schema). List the frozen set for each phase in its
 4. All members pull from `phase#` before continuing.
 5. Each member manually checks their code against the impact section — semantic breakage
    (code reading a renamed field) will **not** surface as a git conflict.
+
+### PHASE#_MEMBER_TASK.md Generation Process
+
+Run at the start of each phase. Template: `docs/version1/phases/PHASE_MEMBER_TASK_TEMPLATE.md`.
+
+1. **Claude separates tasks (no role assignment)** — reads `PLANNING.md`, lists every task for
+   the phase by its numbered ID, and flags hybrid tasks (touching two ownership zones). Hybrid
+   tasks split into sub-folders (`task#-[zoneA]/`, `task#-[zoneB]/`) and are listed as separate
+   owned units.
+2. **Admin discusses the split with the team** — decide the role split to avoid underutilization.
+   _(SOLO: skip — you own every task.)_
+3. **Admin assigns roles** — declares which member owns which tasks. _(SOLO: skip.)_
+4. **Claude generates `PHASE#_MEMBER_TASK.md`** — member names, assigned tasks, ownership zones,
+   branch names, and the frozen shared-contract file list.
+5. **Admin reviews and locks** — admin is the only one who edits this file thereafter.
 
 ### Phase Lifecycle
 

@@ -37,7 +37,7 @@ Read ALL of the following before writing a single line of code:
 2. docs/[version]/phases/phase[N]/task[NN]_[slug]/RESEARCH_PHASE[N]_TASK[NN].md
    — background for understanding WHY each decision was made (do not re-research)
 3. docs/[version]/ARCHITECTURE.md — invariants you must not violate
-4. docs/[version]/CLASS_MODEL.md — authoritative data model; your code must match this
+4. docs/[version]/DATA_MODEL.md — authoritative data model; your code must match this
 5. Every file listed in the plan's "Files to Modify" — read their current state before
    touching them; confirm your understanding of what exists before changing it
 6. Every file listed in the plan's "Files to Create" — confirm they do not already exist.
@@ -148,7 +148,7 @@ If a "Verify By" check fails and you cannot identify the fix within two attempts
 1. Do NOT keep trying in silence. Debugging without documentation is invisible context loss.
 2. Create the iteration folder:
    docs/[version]/phases/phase[N]/task[NN]_[slug]/ITERATION1/
-3. Write DEBUGGING_RESEARCH_PHASE[N]_TASK[NN].md in that folder:
+3. Write DEBUG_RESEARCH_PHASE[N]_TASK[NN].md in that folder:
 
    # Debugging Research: Phase [N] Task [NN] — Iteration 1
 
@@ -176,7 +176,7 @@ If a "Verify By" check fails and you cannot identify the fix within two attempts
 
 4. Tell the user exactly:
    "Step [N] failed verification after two attempts. I have created
-   ITERATION1/DEBUGGING_RESEARCH_PHASE[N]_TASK[NN].md. Please review it. We need to
+   ITERATION1/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md. Please review it. We need to
    run a debug loop before continuing implementation."
 
 5. The debug loop is a mini RPID scoped to the failing step:
@@ -204,7 +204,7 @@ When ALL steps are complete and ALL "Verify By" checks pass:
      as "Malleable" in your project's CLAUDE.md (typically STATUS.md, DECISIONS.md,
      ARCHITECTURE.md, the data model doc, PLANNING.md, and other shared truth docs)
    - No RPID docs are in the diff —
-     RESEARCH_*.md, PLANNING_*.md, DEBUGGING_*.md files are documentation, not code
+     RESEARCH_*.md, PLANNING_*.md, DEBUG_*.md files are documentation, not code
    - No .env files, credential files, or secrets
    - No generated build artifacts (dist/, build/, out/, target/, __pycache__/,
      node_modules/, .next/, etc. — whatever your build system produces)
@@ -226,7 +226,7 @@ When ALL steps are complete and ALL "Verify By" checks pass:
 
 ## STEP 7: After the impl Commit — What Comes Next
 
-The docs commit (updating ARCHITECTURE.md, CLASS_MODEL.md, STATUS.md, PLANNING.md to
+The docs commit (updating ARCHITECTURE.md, DATA_MODEL.md, STATUS.md, PLANNING.md to
 reflect this task's changes) happens separately, later, and only after coordination.
 It is NOT part of this session's job.
 
