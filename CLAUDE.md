@@ -7,6 +7,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 > Keep the **Collaboration** section close to verbatim — it is the reusable methodology.
 > The fastest way to fill this in is to run `prompts/PROJECT_INIT_PROMPT.md` in a fresh session.
 
+> **Placeholder integrity (read before acting):** A `{{...}}` token is an *unfilled* placeholder.
+> While any remain in a doc, that area of the project is **not yet instantiated** — do **not**
+> invent build commands, architecture, metrics, or status to fill the gap, and do not run code
+> or test workflows that assume they exist. Surface the gap instead. If asked to "set up", "init",
+> or "scaffold" the project, run the interview in `prompts/PROJECT_INIT_PROMPT.md` rather than
+> guessing. Once a placeholder is replaced with real content, this rule is dormant for that spot;
+> never re-introduce a `{{...}}` token into a section that has already been filled.
+
 ## Project Settings
 
 _Project-level feature flags — read first. This template ships in **SOLO mode**: one developer
@@ -73,6 +81,13 @@ Implementation) is next."}}**
 
 Read `docs/version1/STATUS.md` first when resuming work — it tracks current phase, blockers, and
 next actions. **Update it at the end of every session too.**
+
+> **Phase 0 is always Vision Alignment.** Every version begins with an extensive, thorough
+> interview between the user and Claude to align on *exactly* what is being built — and what it
+> is **not** — before any code or architecture. Uncertainties are captured, never guessed: a
+> design choice becomes an **open ADR** in `DECISIONS.md`; an unknown becomes a numbered **open
+> question** in `STATUS.md`. Phase 0 closes only when the vision is aligned and every uncertainty
+> is logged. Run it via `prompts/PROJECT_INIT_PROMPT.md`.
 
 ### Key docs
 
@@ -183,9 +198,11 @@ Track 4 — Debug:     R(debug) → P(debug) → I(debug) → back to Track 3
 
 **CI test gate (Track 3):** the full suite also runs as a *required* GitHub Actions check on
 every PR to `phase#`. A local pass with a red CI check is **not** a pass — the PR cannot merge
-until CI is green. This gate is the project's to create: author the workflow at phase 1 start.
-The shipped `.github/workflows/` contains only the Claude Code action and the auto-review — not
-the test gate.
+until CI is green. A stack-agnostic **skeleton ships at `.github/workflows/test.yml`**, but it
+intentionally **fails until you replace its placeholder command** with your real suite — finish
+it at phase 1 start (the runner + isolation choice is pre-registered as ADR-002 in `DECISIONS.md`;
+stack-specific tooling lives in `profiles/`). The other shipped workflows, `claude.yml` and
+`claude-code-review.yml`, are the Claude action and auto-review; neither runs tests.
 
 Each step has a copy-paste prompt in `prompts/`. Pick a **mode** first
 (`prompts/modes/FEATURE_MODE.md`, `ISSUE_MODE.md`, or `OVERNIGHT_MODE.md`), then run the track
@@ -276,6 +293,7 @@ Run at the start of each phase. Template: `docs/version1/phases/PHASE_MEMBER_TAS
 
 | Event | Who | Action |
 |-------|-----|--------|
+| Phase 0 (vision) | Admin + Claude | Extensive vision-alignment interview on exactly what to build; log every uncertainty as an open ADR / open question — before any code |
 | Phase start | Collab integrator | Creates `phase#` from `testing`; generates `PHASE#_MEMBER_TASK.md` |
 | Task work | Member | Branches `username/phase#_task#`; follows RPID loop |
 | Contract change needed | Member | Files `REQUEST#` doc; collab_integrator applies |

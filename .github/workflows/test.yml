@@ -1,0 +1,52 @@
+name: Tests
+
+# Track 3 CI test gate (see CLAUDE.md -> Collaboration -> RPID Loop -> Track 3).
+# Make this a REQUIRED status check on PRs into your phase branches:
+#   Settings -> Branches -> branch protection rule -> "Require status checks to pass".
+# A local pass with a red check here is NOT a pass.
+#
+# This skeleton ships stack-agnostic. It intentionally FAILS until you replace the
+# placeholder command in the "Run the full test suite" step below. A test gate that
+# is vacuously green is worse than no gate -- author this for real at Phase 1 start.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+      - testing
+      - 'phase*'
+    # Optional: only run when code or tests change.
+    # paths:
+    #   - 'src/**'
+    #   - 'tests/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest   # windows-native target? swap to windows-latest (see profiles/).
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # --- Replace with your stack's setup -----------------------------------
+      # Node:   - uses: actions/setup-node@v4    with: { node-version: '20' }
+      # Python: - uses: actions/setup-python@v5  with: { python-version: '3.12' }
+      # Go:     - uses: actions/setup-go@v5      with: { go-version: '1.22' }
+      # Rust:   - uses: dtolnay/rust-toolchain@stable
+      # -----------------------------------------------------------------------
+
+      # --- Optional: install dependencies ------------------------------------
+      # - name: Install dependencies
+      #   run: npm ci   # | pip install -r requirements.txt | go mod download
+      # -----------------------------------------------------------------------
+
+      - name: Run the full test suite
+        # Replace the body below with your real command, e.g.:
+        #   npm test   |   pytest -q   |   go test ./...   |   cargo test
+        # Run the WHOLE suite here, never a subset (CLAUDE.md Hard Rules).
+        # Until replaced, this fails on purpose so the gate is never falsely green.
+        run: |
+          echo "::error::test.yml is a placeholder -- replace the run command with your real test suite (CLAUDE.md, Track 3)."
+          exit 1

@@ -22,19 +22,25 @@ cloud." "Frontend first." "Every phase ends with a measured benchmark."_
 
 | Decision | Options | Resolve Before |
 |----------|---------|----------------|
+| Test infrastructure + isolation (ADR-002) | in-process runner vs Docker vs full VM | Phase 1 |
 | {{decision}} | {{A vs B}} | Phase {{N}} |
 
 ---
 
-## Phase 0: Documentation and Architecture Design
+## Phase 0: Vision Alignment and Architecture Design
 
-_Establish the full doc backbone and lock the foundational decisions before any code._
+_Phase 0 is always vision alignment: an extensive, thorough interview between the user and Claude
+on exactly what is being built — and what it is not — before any code. Capture every uncertainty
+(a design choice → an open ADR; an unknown → a numbered open question). Only then draft the doc
+backbone._
 
-- [ ] 1. North Star defined and recorded in STATUS.md + CLAUDE.md
-- [ ] 2. ARCHITECTURE.md core loop + invariants drafted
-- [ ] 3. DATA_MODEL.md entities drafted
-- [ ] 4. First ADR locked in DECISIONS.md
-- [ ] 5. PLANNING.md phases laid out (this file)
+- [ ] 1. Vision-alignment interview completed; user confirms the vision is captured
+- [ ] 2. North Star defined and recorded in STATUS.md + CLAUDE.md
+- [ ] 3. Scope boundaries set; deferred items recorded in FUTURE_IMPLEMENTATIONS.md
+- [ ] 4. Every uncertainty logged — open ADRs in DECISIONS.md, open questions in STATUS.md
+- [ ] 5. ARCHITECTURE.md core loop + invariants drafted
+- [ ] 6. DATA_MODEL.md entities drafted
+- [ ] 7. PLANNING.md phases laid out (this file)
 
 ## Phase 1: {{Core Implementation}}
 

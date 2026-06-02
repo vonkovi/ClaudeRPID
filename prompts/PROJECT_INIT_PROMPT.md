@@ -19,21 +19,40 @@ The project I am about to describe is: [DESCRIBE YOUR PROJECT IN 2-3 SENTENCES]
 
 ---
 
-## STEP 1: Establish the North Star
+## STEP 1: Vision Alignment Interview (this IS Phase 0)
 
-Before creating any file, ask me ONE question:
+Phase 0 is ALWAYS vision alignment between the user and Claude — not coding, not even
+architecture. Before creating any file, run an **extensive, thorough interview** to pin down
+exactly what is being built and, just as importantly, what it is NOT. Do not rush to scaffold:
+this interview is the actual work of Phase 0.
 
-  "What is the single most important performance/quality metric this project
-   must optimize for? This becomes the North Star — every architectural decision
-   will be evaluated against it."
+Interview in rounds. Ask a few questions at a time, listen, then probe deeper on anything vague
+or hand-wavy. Cover at least:
 
-Wait for my answer. Record it. It will appear in CLAUDE.md, STATUS.md, PLANNING.md,
-and every architectural discussion.
+  1. Problem & users — what problem, for whom, and what do they do today instead?
+  2. What it is NOT — the common misconception; the nearest thing this is deliberately not.
+  3. North Star — the single metric every decision is weighed against (examples below).
+  4. Scope boundaries — what is explicitly in v1 vs deferred to FUTURE_IMPLEMENTATIONS.md.
+  5. Core idea / central bet — the one principle everything else is downstream of.
+  6. Constraints — platform, stack, budget, deadline, team size, compliance.
+  7. Success criteria — how you will know v1 worked; the acceptance bar.
+  8. Risks & unknowns — what could sink this; what the user is unsure about.
+
+Rules for the interview:
+  - Reflect back what you heard before moving on. Confirm alignment; never assume.
+  - Anything the user is UNSURE of is captured, never guessed:
+      * a design choice with options -> an OPEN ADR in DECISIONS.md (Status: Open — resolve before Phase N)
+      * an open unknown to resolve    -> a numbered OPEN QUESTION in STATUS.md
+  - Keep going until the user explicitly confirms the vision is captured. Only THEN proceed to STEP 2.
 
 Examples of good North Stars:
   - "Lower compute. Higher speed. Lower cost." (for an LLM-heavy system)
   - "Zero downtime. Sub-100ms p99 latency." (for a real-time service)
   - "One-command deploy. No ops overhead." (for a solo-dev product)
+
+Record everything. The North Star appears in CLAUDE.md, STATUS.md, PLANNING.md, and every
+architectural discussion; the rest of the interview seeds ARCHITECTURE.md, DATA_MODEL.md,
+DECISIONS.md, and FUTURE_IMPLEMENTATIONS.md in the steps below.
 
 ---
 
@@ -107,6 +126,9 @@ Rules:
 - If a decision supersedes a prior one, note it explicitly in the text.
 - Inherited decisions from a prior version should be listed at the top under
   "Inherited from [version]" with a note if they have changed.
+- Pre-register a **Test Infrastructure** ADR (test runner + isolation: in-process vs Docker
+  vs full VM). Leave it Open until Phase 1 — it fills .github/workflows/test.yml and selects
+  the profiles/ overlay, if any.
 
 ### docs/[version]/ARCHITECTURE.md
 
@@ -403,7 +425,7 @@ After creating all files, run through this checklist:
 - [ ] Branch structure: main → testing → phase0 (or username/phase0)
 - [ ] No application code written yet (Phase 0 is planning, not coding)
 - [ ] STATUS.md "Next Actions" section has a clear first action
-- [ ] Required CI test-gate workflow planned for phase 1 (Track 3 gate; author it at phase 1 start)
+- [ ] CI test-gate skeleton (.github/workflows/test.yml) present and flagged to be filled at phase 1 — it fails until its placeholder command is replaced (Track 3 gate; choice recorded as ADR-002)
 
 ---
 
@@ -416,7 +438,7 @@ After creating all files, run through this checklist:
 - Every doc you write should be specific to this project. Use the project description I gave
   you to make everything concrete and real — no generic [placeholder] filler.
 - If you are unsure about a project-specific detail, write an open ADR entry rather than guessing.
-- STATUS.md "Current Phase" should read: "Phase 0 — [Project Name] Documentation and
+- STATUS.md "Current Phase" should read: "Phase 0 — [Project Name] Vision Alignment and
   Architecture Design."
 - STATUS.md "Next Actions" should be the literal first 3-5 things to do to make the project real.
 - After creating all files, show a brief summary of what was created and ask:

@@ -12,7 +12,7 @@ _Update this file at the start and end of every session. This is the first doc t
 
 ## Current Phase
 
-**Phase 0 — {{Project Name}} Documentation and Architecture Design.**
+**Phase 0 — {{Project Name}} Vision Alignment and Architecture Design.**
 
 ## What's Done
 
@@ -48,6 +48,7 @@ See `DECISIONS.md` — authoritative log of all locked ADRs.
 
 | ADR | Decision | Resolve By |
 |-----|----------|------------|
+| ADR-002 | Test infrastructure + isolation (runner; in-process vs Docker vs VM) | Phase 1 |
 | ADR-{{NNN}} | {{unresolved choice}} | Phase {{N}} |
 
 ## Open Questions
