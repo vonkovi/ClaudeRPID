@@ -62,6 +62,12 @@ STEP 5: The docs Commit
 - [ ] Stage by path (never git add -A)
 - [ ] Commit: "docs: phase[N]_task[NN]"
 
+STEP 5.5: Persist Learnings (Reflect)
+If this task surfaced a durable, non-obvious lesson — a reusable pattern, a pitfall, or a project
+quirk worth 5+ minutes to a future session — record it so it is not lost. Append a one-line entry
+to a "Learnings" list in STATUS.md (or the task SESSION_LOG): what it is, and where it applies.
+Keep it specific. Do not log obvious facts or one-off transient errors.
+
 STEP 6: Open PR
 Open PR from `[username]/phase[N]_task[NN]_[slug]` to `phase[N]`.
 PR description: what was implemented, what was fixed, what tests were added.

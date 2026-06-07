@@ -33,7 +33,9 @@ flip a flag here — **do not delete the underlying section.**_
 | Commit discipline (`impl`/`test`/`fix`/`docs`) | **ON** | Unchanged |
 | CI test gate (Track 3) | **ON** | Your only second reviewer — more valuable solo |
 | Branch hierarchy (`main`/`testing`/`phase#`/`task#`) | **ON** | Unchanged |
-| User review gates | **ON** | You are the reviewer; relaxed only by ISSUE_MODE / OVERNIGHT_MODE |
+| User review gates → **Review autonomy** dial | **full** | `full` = you approve every gate (default) · `milestone` = one approval per task · `auto` = hands-off, stops only at Hard Gates. Defined in **Ethos → Gate Behavior**. ISSUE/OVERNIGHT modes preset this to `auto`. |
+| GStack role reviews (CEO / Eng / Code / Security / Design) | **ON** | Specialist review rubrics at each gate — hats Claude wears, orthogonal to the human roles. Each is gated by Review autonomy. |
+| Template versioning + self-link (`.rpid/`) | **ON** | Project knows its template lineage (version + source in `.rpid/template.json`) and can upgrade via `prompts/UPGRADE_TEMPLATE_PROMPT.md`. |
 | Three-role model (Admin / Collab Integrator / Member) | **DORMANT** | You are all three; ignore role separation |
 | Shared Contract Change Process (`REQUEST#` docs) | **DORMANT** | Edit shared/contract files directly; just weigh ripple effects first |
 | "Announce to collab_integrator" / "all members pull" steps | **DORMANT** | No-op solo — skip them |
@@ -81,6 +83,16 @@ Implementation) is next."}}**
 
 Read `docs/version1/STATUS.md` first when resuming work — it tracks current phase, blockers, and
 next actions. **Update it at the end of every session too.**
+
+<!-- RPID:METHODOLOGY:VERSION-CHECK v2.0 START -->
+> **Template version check (session start).** This project records its template lineage in
+> `.rpid/template.json` and the `Template:` line of `STATUS.md`. If a newer template version is
+> known (from the template `source` in `.rpid/template.json`), print **one** line:
+> "Template update available: rpid@X → rpid@Y — run `prompts/UPGRADE_TEMPLATE_PROMPT.md`." Say it
+> once per session; never auto-apply. Offline or no source reachable → skip silently. Running init
+> in an existing project that's behind should likewise offer the upgrade rather than re-scaffold.
+<!-- RPID:METHODOLOGY:VERSION-CHECK v2.0 END -->
+
 
 > **Phase 0 is always Vision Alignment.** Every version begins with an extensive, thorough
 > interview between the user and Claude to align on *exactly* what is being built — and what it
@@ -140,6 +152,51 @@ to the North Star}}
 
 ---
 
+<!-- RPID:METHODOLOGY:ETHOS v2.0 START -->
+## Ethos
+
+> The builder principles every session operates by. Adapted from Garry Tan's GStack ethos and
+> fused with RPID's anti-context-rot core. Each principle ties to a rule you already follow.
+
+- **Boil the Lake.** AI makes completeness cheap. When the complete implementation (full tests,
+  all edge cases, every error path) costs minutes more than the shortcut, do the complete thing.
+  Boil "lakes" (a module's full coverage); flag "oceans" (multi-quarter rewrites) as out of scope.
+  → the force behind the Track 3 gate and every benchmark.
+- **Search Before Building.** Before building anything unfamiliar, ask "has this been solved?"
+  Three Layers of Knowledge: (1) tried-and-true — don't reinvent; (2) new-and-popular — scrutinize;
+  (3) first principles — prize above all. A **Eureka** is when first-principles reasoning shows the
+  conventional approach is wrong *here* — name it. → the Research (R) track's job.
+- **User Sovereignty.** AI recommends; the user decides. The one rule that overrides all others.
+  Cross-model agreement is a strong signal, never permission to act. → why every gate is a gate.
+- **The Golden Age.** One person with AI now builds what took a team of twenty. What remains is
+  taste, judgment, and the willingness to do the complete thing. → the premise of SOLO mode.
+- **The Iron Law (debugging).** No fix without investigation — find the root cause, then fix it.
+  Escalate after two failed iterations. → this is Track 4.
+
+### Gate Behavior (the Review-autonomy dial)
+
+Every review/track gate reads the **Review autonomy** flag (Project Settings) to decide whether to
+stop for you. Each review decision is classified first:
+
+- **Mechanical** — obvious; a senior engineer would just do it (rename, dead-code removal).
+- **Taste** — reasonable people could differ (two valid architectures).
+- **User Challenge** — a review wants to change *your stated* direction.
+
+| Level | Mechanical | Taste | User Challenge | Hard Gates |
+|-------|-----------|-------|----------------|------------|
+| **full** (default) | ask | ask | ask | always stop |
+| **milestone** | auto + log | surface once, at the task boundary | always stop | always stop |
+| **auto** | auto + log | auto-decide by the principles above + log | **always stop** | always stop |
+
+In `milestone`/`auto`, every auto-decision is written to the task `SESSION_LOG` — nothing is silent.
+
+**Hard Gates — ALWAYS stop, even in `auto`** (one-way doors): destructive / irreversible ops
+(force-push, history rewrite, data deletion, production deploy) · architecture or shared-contract
+changes (a new/changed ADR, a `DATA_MODEL` change, a frozen contract file) · a high-confidence
+security finding · a **User Challenge** · escalation after two failed debug iterations · anything a
+prompt classifies as a one-way door.
+<!-- RPID:METHODOLOGY:ETHOS v2.0 END -->
+
 ## Collaboration
 
 > **Lost context and outdated context are the real enemies.**
@@ -157,6 +214,28 @@ silently outdating context for another Claude or team member?
 
 > Solo project? You play all three roles. The discipline still pays off: the branch hierarchy
 > and the two-commit rule keep your own future sessions from losing context.
+
+<!-- RPID:METHODOLOGY:GSTACK-ROLES v2.0 START -->
+### Roles Claude wears (GStack personas)
+
+Distinct from the human roles above. These are **functional hats Claude puts on at a gate** — a
+structured review lens, not a separate person. They are **orthogonal** to the Admin / Integrator /
+Member model (which is about who-owns-what across humans, DORMANT in SOLO). Toggle with the
+`GStack role reviews` flag; each is gated by **Review autonomy**.
+
+| Persona | Wears the hat at | What it checks | Prompt |
+|---------|------------------|----------------|--------|
+| **CEO** | Phase 0 vision · Track 1 Research | Is the scope right? the 10-star version? (four scope modes) | `OFFICE_HOURS_PROMPT.md`, `reviews/CEO_REVIEW_PROMPT.md` |
+| **Eng Manager** | Track 1 Planning | Locks architecture, failure modes, test matrix | `reviews/ENG_REVIEW_PROMPT.md` |
+| **Designer** (optional) | Track 1 Planning, UI only | 0–10 UI rubric, AI-slop check | `reviews/DESIGN_REVIEW_PROMPT.md` |
+| **Staff Reviewer** | after Track 1 Implementation | Pre-merge bug audit + adversarial pass | `reviews/CODE_REVIEW_PROMPT.md` |
+| **CSO** (optional) | Review step, security-relevant | OWASP + STRIDE, confidence-gated | `reviews/SECURITY_REVIEW_PROMPT.md` |
+| **Release** | after Track 3 pass | Ship: plan-completion, scope-drift, PR | `SHIP_PROMPT.md` |
+| **Historian** | Reflect | Retro + persisted learnings | `RETRO_PROMPT.md` |
+
+Each persona surfaces findings for *your* approval under the Gate Behavior dial; none auto-applies
+a Hard-Gate decision. The shared rubric primitives they all use live in `prompts/reviews/_SHARED.md`.
+<!-- RPID:METHODOLOGY:GSTACK-ROLES v2.0 END -->
 
 ### Branching Hierarchy
 
@@ -184,17 +263,28 @@ main                              ← most stable version
 ### RPID Loop
 
 All tasks follow four sequential tracks. Each track is a complete R→P→I cycle run in its own
-session. The user reviews and approves at every gate before the next session begins.
+session. The user reviews and approves at every gate before the next session begins — **subject to
+the Review-autonomy dial** (see Ethos → Gate Behavior; `full` stops at every gate, `auto` stops only
+at Hard Gates). Steps marked `*` are GStack role reviews — on when `GStack role reviews` is **ON**,
+and themselves gated by Review autonomy.
 
 ```
-Track 1 — Feature:   R(init) → P(init) → I(init)
+Track 1 — Feature:   R(init) → [CEO review*] → P(init) → [Eng review*, Design review* if UI] → I(init)
+                       → [Code review*: pre-merge bug audit + adversarial pass]
 Track 2 — Tests:     R(test) → P(test) → I(test)
+                       (TEST_SETUP runs once if the project has no real test gate yet)
 Track 3 — Run:       run tests locally + required CI check on the PR
-                     ┌─ all pass (local + CI green) → docs commit → PR merged → next task
-                     └─ any fail (local or CI) → Track 4
+                     ┌─ all pass → docs commit → [Ship*: plan-completion + scope-drift + PR]
+                     │             → PR merged → [Reflect*: retro + persist learnings] → next task
+                     └─ any fail → Track 4
 Track 4 — Debug:     R(debug) → P(debug) → I(debug) → back to Track 3
-  (repeating)        escalate after two iterations without passing
+  (the Iron Law)     no fix without investigation; escalate after two iterations without passing
 ```
+
+**The GStack role steps (`*`)** are reviews, not new tracks — they produce findings for your
+approval and never change the commit discipline below. Each runs only when relevant (e.g. Design
+review only for UI work, Security review for security-relevant diffs) and obeys the autonomy dial.
+A bare task can still run plain R→P→I; reach for the heavier hats on bigger or riskier work.
 
 **CI test gate (Track 3):** the full suite also runs as a *required* GitHub Actions check on
 every PR to `phase#`. A local pass with a red CI check is **not** a pass — the PR cannot merge

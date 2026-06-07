@@ -44,6 +44,9 @@ This template is an opinionated answer to both. It gives Claude (and you) a **li
 | ✅ **A CI test gate** | A GitHub Actions skeleton ([`.github/workflows/test.yml`](.github/workflows/test.yml)) that makes the full test suite a *required* check on every PR — your second reviewer, especially when working solo. |
 | 👥 **Solo *and* team modes** | Ships in **SOLO mode** (one dev + Claude). Flip a flag and the full team model — roles, branch hierarchy, shared-contract process — wakes up. Nothing is rewritten; it's just dormant. |
 | 🧱 **Stack-agnostic core** | No language, framework, or runner is assumed. Works for a CLI, a web app, a backend service, a research codebase, or a library. Stack-specific tooling is an opt-in overlay in [`profiles/`](profiles/). |
+| 🎩 **GStack role reviews** | Specialist review "hats" Claude wears at each gate — CEO (scope), Eng (architecture), Code (pre-merge bugs), plus optional Security/Design/DevEx — in [`prompts/reviews/`](prompts/reviews/), sharing one rubric in `_SHARED.md`. An **Ethos** (Boil the Lake, Search Before Building, User Sovereignty) anchors every call. Adapted from [Garry Tan's GStack](https://github.com/garrytan/gstack). |
+| 🎚️ **Review-autonomy dial** | Choose how hands-on you are: `full` (approve every gate) · `milestone` (one approval per task) · `auto` (hands-off) — with a Hard-Gates safety floor that always stops for dangerous or irreversible actions. |
+| ⬆️ **Self-updating** | The template is versioned, with all its metadata in one hidden `.rpid/` dir (version, ownership map, CHANGELOG, migrations). A project self-links to the template, notices when it's outdated, and upgrades with [`prompts/UPGRADE_TEMPLATE_PROMPT.md`](prompts/UPGRADE_TEMPLATE_PROMPT.md) — without touching your content. |
 
 ---
 
@@ -111,12 +114,14 @@ CLAUDE.md         ← the operating manual Claude reads first (fill in the place
 START_HERE.md     ← permanent how-to-use-this-template guide — read this first
 README.md         ← this file (your project's future front page)
 MISSION.md        ← purpose + success metrics (optional; for goal-driven/research projects)
-prompts/          ← the RPID prompt library (modes/ + one prompt per track)
+prompts/          ← the RPID prompt library (modes/ + per-track + lifecycle prompts)
+  └── reviews/    ← GStack role-review rubrics (CEO, Eng, Code, Security, Design, DevEx) + _SHARED.md
 docs/version1/    ← the living doc backbone: STATUS, DECISIONS, ARCHITECTURE, DATA_MODEL, PLANNING…
   └── phases/     ← phase + task scaffolding for the collaboration model
 profiles/         ← opt-in stack overlays (test runner, CI, isolation) — pick one at init, then delete
 src/              ← your code root (rename to frontend/, backend/, app/… as needed)
 .github/workflows ← Claude action, auto-review, and the Track 3 CI test gate
+.rpid/            ← template self-link + metadata (version, ownership, CHANGELOG, migrations) for upgrades
 ```
 
 ## Key docs

@@ -56,6 +56,24 @@ After two debug iterations without passing: STOP. Escalate. Do not attempt a thi
 
 ---
 
+## GStack role steps (optional — on when `GStack role reviews` is ON; gated by `Review autonomy`)
+
+These are reviews, not new tracks. They slot into the gates above and produce findings for your
+approval. Each runs only when relevant; `Review autonomy` decides whether each stops for you
+(`full` = every one; `auto` = only Hard Gates). FEATURE_MODE presets `Review autonomy = full`.
+
+| Slot | Prompt | What it adds |
+|------|--------|--------------|
+| Phase 0 / before Session 1 | `prompts/OFFICE_HOURS_PROMPT.md` | Vision diagnostic — forcing questions + alternatives gate (big/ambiguous features) |
+| After Session 1 (research) | `prompts/reviews/CEO_REVIEW_PROMPT.md` | Scope / 10-star challenge (new user-facing or large work) |
+| After Session 2 (planning) | `prompts/reviews/ENG_REVIEW_PROMPT.md` (+ `DESIGN_REVIEW` if UI) | Architecture lock + test matrix |
+| After Session 3 (impl) | `prompts/reviews/CODE_REVIEW_PROMPT.md` (+ `SECURITY_REVIEW` if security-relevant) | Pre-merge bug audit + adversarial pass |
+| After Track 3 pass | `prompts/SHIP_PROMPT.md` | Plan-completion audit + scope-drift + PR |
+| After merge | `prompts/RETRO_PROMPT.md` | Reflect — retro + learnings |
+| Once, if no test gate yet | `prompts/TEST_SETUP_PROMPT.md` | Bootstraps the real CI test gate (closes ADR-002) |
+
+---
+
 ## User Parallelism
 
 - The gate is the output document. The user reads it at their own pace, approves or redirects.

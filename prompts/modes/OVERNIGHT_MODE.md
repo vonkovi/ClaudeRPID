@@ -2,6 +2,14 @@
 
 **Type: Autonomous. User-induced.** The user provides a list of tasks and starts the run. No human gates between tracks. Stronger guardrails apply throughout because divergence risk is high without oversight. Results are reported at the end for human review.
 
+> **Autonomy:** this mode presets **`Review autonomy = auto`** (see `CLAUDE.md` → Ethos → Gate
+> Behavior). The GStack role steps (Code review before each PR, Ship's plan-completion + verification
+> before marking a task done) run autonomously and **auto-apply only mechanical fixes** — every
+> auto-decision is logged in that task's SESSION_LOG. **Hard Gates still halt the affected task**
+> (a destructive op, an architecture/contract change, a high-confidence security finding, a User
+> Challenge) and the run continues to the next task, logging the block. This composes with the Hard
+> Rules below.
+
 ---
 
 ## Task List Format

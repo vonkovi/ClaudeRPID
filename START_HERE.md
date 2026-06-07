@@ -19,6 +19,8 @@ or a library.
 | `README.md` | Human-facing project front page. |
 | `MISSION.md` | Version-agnostic statement of purpose and success metrics (optional — delete if not a goal-driven/research project). |
 | `prompts/` | The RPID prompt library. Copy-paste these into Claude sessions to run each step of any task. Already generic. |
+| `prompts/reviews/` | GStack role-review rubrics (CEO, Eng, Code, + optional Security/Design/DevEx) sharing `_SHARED.md`. Run them at the loop's gates; the **Review-autonomy** dial in `CLAUDE.md` (`full`/`milestone`/`auto`) decides how often they stop for you. |
+| `.rpid/` | Template versioning + self-link (version, ownership map, CHANGELOG, migrations) — lets a project detect it's on an old template and upgrade via `prompts/UPGRADE_TEMPLATE_PROMPT.md` without touching your content. |
 | `docs/version1/` | The living documentation backbone — `STATUS`, `DECISIONS`, `ARCHITECTURE`, `DATA_MODEL`, `PLANNING`, `EXPERIMENTS`, `FUTURE_IMPLEMENTATIONS`. |
 | `docs/version1/phases/` | Phase + task scaffolding for the collaboration model. |
 | `src/` | Your code root. Rename to `frontend/`, `backend/`, `app/`, etc. as needed. |
@@ -51,6 +53,7 @@ Work top-down:
 3. **Every task runs the RPID loop**: Research → Plan → Implement, then Tests (R→P→I), then Run, then Debug (R→P→I) if anything fails.
 4. **Code commits and doc commits are never combined** — `impl:` is code only, `docs:` is malleable-doc updates only.
 5. **Decisions are made in Research/Planning and merely executed in Implementation** — if you're making a design choice while coding, stop and go back.
+6. **Reviews are hats, not gates you skip** (v2.0) — at each gate Claude can wear a CEO / Eng / Code / Security / Design hat to sharpen scope, lock architecture, and catch bugs before merge. How often they stop for you is the **Review-autonomy** dial (`full` / `milestone` / `auto`); some things always stop (the Hard Gates). It all rests on the **Ethos** in `CLAUDE.md` — and **User Sovereignty** means you always decide.
 
 ---
 

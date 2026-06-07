@@ -44,3 +44,20 @@ profiles/
 
 No profile ships populated by default — add the one(s) you need, or let `PROJECT_INIT` generate
 one from your stack answer. **Keeping the base empty is the point.**
+
+## GStack tool-bound overlays (the executable half of the methodology)
+
+The GStack integration (v2.0) ports the *methodology* of Garry Tan's GStack as stack-agnostic
+prompts in `prompts/reviews/` and `prompts/`. The parts of GStack that need **real executables**
+are intentionally left out of the base and belong here as opt-in overlays:
+
+| Overlay | Powers | Needs |
+|---------|--------|-------|
+| `web/` (browser QA) | live `/qa`, `/canary`, visual `/design-review` execution | a headless browser (e.g. Playwright) |
+| `deploy/` | `/land-and-deploy`, post-deploy `/canary` | a PaaS/CI deploy target (Fly, Render, Vercel, …) |
+| `cross-model/` | an independent second opinion in reviews | a second model CLI (e.g. Codex) |
+
+The prompts degrade gracefully without these — the review *rubrics* run as pure markdown; only the
+live execution needs the overlay. Simplest path for the executable bits: install GStack itself
+(`github.com/garrytan/gstack`) alongside this project and let its `/qa`, `/canary`, etc. handle the
+browser/deploy work while these prompts cover the methodology and gates.

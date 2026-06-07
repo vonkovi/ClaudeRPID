@@ -30,6 +30,19 @@ If the branch already exists (issue was previously attempted): read the existing
 
 ---
 
+## GStack roles & autonomy
+
+This mode presets **`Review autonomy = auto`** — the loop runs end-to-end without stopping for
+routine decisions, but **Hard Gates always stop** and post to the issue for human action (see
+`CLAUDE.md` → Ethos → Gate Behavior; e.g. a contract-file change, a high-confidence security
+finding, escalation after the one debug iteration). When `GStack role reviews` is ON, run
+`prompts/reviews/CODE_REVIEW_PROMPT.md` on the diff before opening the PR (auto-apply mechanical
+fixes; surface anything in the ASK column as an issue comment), and use `prompts/SHIP_PROMPT.md`'s
+plan-completion + verification steps before posting the fix. Every auto-decision is logged in
+SESSION_LOG.
+
+---
+
 ## Track Sequence (autonomous — no human gates)
 
 ### Track 2 — Reproduction Tests

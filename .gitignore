@@ -26,3 +26,10 @@ target/
 
 # Logs
 *.log
+
+# GStack reference clone — dropped in for the v2.0 integration, not part of the template
+gstack/
+
+# Scratch / working docs
+TEMP.md
+TEMP_*.md
