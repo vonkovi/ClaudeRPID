@@ -47,6 +47,7 @@ This template is an opinionated answer to both. It gives Claude (and you) a **li
 | 🎩 **GStack role reviews** | Specialist review "hats" Claude wears at each gate — CEO (scope), Eng (architecture), Code (pre-merge bugs), plus optional Security/Design/DevEx — in [`prompts/reviews/`](prompts/reviews/), sharing one rubric in `_SHARED.md`. An **Ethos** (Boil the Lake, Search Before Building, User Sovereignty) anchors every call. Adapted from [Garry Tan's GStack](https://github.com/garrytan/gstack). |
 | 🎚️ **Review-autonomy dial** | Choose how hands-on you are: `full` (approve every gate) · `milestone` (one approval per task) · `auto` (hands-off) — with a Hard-Gates safety floor that always stops for dangerous or irreversible actions. |
 | ⬆️ **Self-updating** | The template is versioned, with all its metadata in one hidden `.rpid/` dir (version, ownership map, CHANGELOG, migrations). A project self-links to the template, notices when it's outdated, and upgrades with [`prompts/UPGRADE_TEMPLATE_PROMPT.md`](prompts/UPGRADE_TEMPLATE_PROMPT.md) — without touching your content. |
+| 🤖 **Autonomous issue → PR** | Label a GitHub issue `claude` and [`.github/workflows/claude-issue-to-pr.yml`](.github/workflows/claude-issue-to-pr.yml) runs `ISSUE_MODE` autonomously — reproduce → fix → test → open a PR that closes it. You review and `@claude`-iterate, then merge. The feedback loop. (Needs the `CLAUDE_CODE_OAUTH_TOKEN` repo secret.) |
 
 ---
 
@@ -120,7 +121,7 @@ docs/version1/    ← the living doc backbone: STATUS, DECISIONS, ARCHITECTURE, 
   └── phases/     ← phase + task scaffolding for the collaboration model
 profiles/         ← opt-in stack overlays (test runner, CI, isolation) — pick one at init, then delete
 src/              ← your code root (rename to frontend/, backend/, app/… as needed)
-.github/workflows ← Claude action, auto-review, and the Track 3 CI test gate
+.github/workflows ← @claude action, PR auto-review, autonomous issue→PR, and the Track 3 CI test gate
 .rpid/            ← template self-link + metadata (version, ownership, CHANGELOG, migrations) for upgrades
 ```
 
