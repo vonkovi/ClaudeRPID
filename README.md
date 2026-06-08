@@ -121,7 +121,8 @@ docs/version1/    ← the living doc backbone: STATUS, DECISIONS, ARCHITECTURE, 
   └── phases/     ← phase + task scaffolding for the collaboration model
 profiles/         ← opt-in stack overlays (test runner, CI, isolation) — pick one at init, then delete
 src/              ← your code root (rename to frontend/, backend/, app/… as needed)
-.github/workflows ← @claude action, PR auto-review, autonomous issue→PR, and the Track 3 CI test gate
+tests/            ← the template's own self-test suite (integrity checks run by template-check.yml)
+.github/workflows ← @claude action, PR auto-review, issue→PR, the Track 3 test gate, template self-test + connection check
 .rpid/            ← template self-link + metadata (version, ownership, CHANGELOG, migrations) for upgrades
 ```
 

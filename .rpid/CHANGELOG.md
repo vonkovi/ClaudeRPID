@@ -9,6 +9,28 @@ MINOR = additive (new prompts/flags → drop-in) · PATCH = wording/fixes.
 
 ---
 
+## 2.2.0 — Template self-test suite + GitHub connection check
+
+The template now guards its own integrity in CI, and ships a setup-time GitHub-plumbing check.
+
+- **`tests/` + `.github/workflows/template-check.yml`** — the template's own Track 3 gate. The repo
+  ships no code, so its tests are integrity checks: valid workflow YAML, resolvable cross-references,
+  balanced `RPID:METHODOLOGY` fences, consistent version metadata. Run locally with
+  `bash tests/run-all.sh`; add a `tests/check-*.sh` when you find a new drift class.
+- **`.github/workflows/connection-check.yml` + `.github/SETUP.md`** — manual, zero-side-effect check
+  that the GitHub↔Claude wiring (secret present, write permissions, pinned action refs) is correct,
+  plus a manual smoke-test checklist for the parts a workflow can't prove (token validity, the live
+  `@claude` / issue→PR loop).
+- **`CLAUDE.md`** — new `## Testing` / `## Test Coverage` placeholder sections (filled by
+  `TEST_SETUP`), stating that tests are organized by the `test.yml` CI gate, not a folder. Closes a
+  latent inconsistency where `.rpid/OWNERSHIP.md` cited sections that didn't exist.
+- **`MAINTAINING.md`** — new maintainer guide: disambiguates the three meanings of "test" and
+  documents the self-test suite.
+- Doc-integrity fixes now enforced by `check-*.sh`: `STATUS.md` `Template:` line; `SPEC`/`DevEx`
+  prompt indexing in `CLAUDE.md`.
+
+Additive — drop-in, no migration required.
+
 ## 2.1.0 — Autonomous GitHub issue → PR
 
 Embeds GitHub triggers so the autonomous loop runs end to end — a real feedback loop.

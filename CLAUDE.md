@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+<!-- Template-maintainers only; harmless in downstream projects (the condition is simply false there). -->
+> 🛠️ **Maintaining the RPID template itself?** If this repo *is* the template source (not a project
+> built from it), read **[`MAINTAINING.md`](MAINTAINING.md)** first — the `{{PLACEHOLDER}}` tokens
+> below are the product, not gaps to fill.
+
 > **How to use this template:** Replace every `{{PLACEHOLDER}}`. Delete sections that do not
 > apply (e.g. drop the experiment metrics if this is not a research/benchmarking project).
 > Keep the **Collaboration** section close to verbatim — it is the reusable methodology.
@@ -153,6 +158,26 @@ to the North Star}}
 ---
 
 <!-- RPID:METHODOLOGY:ETHOS v2.0 START -->
+## Testing
+
+> Filled by `prompts/TEST_SETUP_PROMPT.md` at Phase 1 start. Until then this project has **no
+> real test gate** — `.github/workflows/test.yml` fails on purpose so the gate is never falsely green.
+
+Tests are organized by the **CI gate, not a folder.** `.github/workflows/test.yml` is the required
+Track 3 check, and its `run:` command *is* the definition of "the suite." Your test directory is
+whatever your stack uses (`tests/`, a `_test.go` beside each source file, `__tests__/`, …) — it is
+wired into that command at `TEST_SETUP`, which is also what makes the location authoritative.
+
+- **Test directory:** `{{e.g. tests/ — decided at TEST_SETUP}}`
+- **Run the full suite:** `{{cmd — this is also the test.yml run step}}`
+- **Run a SINGLE test:** `{{cmd}}`
+
+## Test Coverage
+
+> Filled by `TEST_SETUP`. Records the coverage tool, the target threshold, and how it's enforced.
+
+- **Tool / threshold:** `{{e.g. coverage ≥ 80%}}`
+
 ## Ethos
 
 > The builder principles every session operates by. Adapted from Garry Tan's GStack ethos and
@@ -228,6 +253,7 @@ Member model (which is about who-owns-what across humans, DORMANT in SOLO). Togg
 | **CEO** | Phase 0 vision · Track 1 Research | Is the scope right? the 10-star version? (four scope modes) | `OFFICE_HOURS_PROMPT.md`, `reviews/CEO_REVIEW_PROMPT.md` |
 | **Eng Manager** | Track 1 Planning | Locks architecture, failure modes, test matrix | `reviews/ENG_REVIEW_PROMPT.md` |
 | **Designer** (optional) | Track 1 Planning, UI only | 0–10 UI rubric, AI-slop check | `reviews/DESIGN_REVIEW_PROMPT.md` |
+| **DevEx** (optional) | Track 1 Planning, CLI/API/SDK only | Developer-experience rubric: ergonomics, error messages, docs | `reviews/DEVEX_REVIEW_PROMPT.md` |
 | **Staff Reviewer** | after Track 1 Implementation | Pre-merge bug audit + adversarial pass | `reviews/CODE_REVIEW_PROMPT.md` |
 | **CSO** (optional) | Review step, security-relevant | OWASP + STRIDE, confidence-gated | `reviews/SECURITY_REVIEW_PROMPT.md` |
 | **Release** | after Track 3 pass | Ship: plan-completion, scope-drift, PR | `SHIP_PROMPT.md` |
@@ -334,6 +360,18 @@ The `fix:` commit is absent if Track 3 passes on the first run. Every other comm
 | `DEBUG_PLANNING_PROMPT.md` | 4 — P | Fix planning |
 | `DEBUG_IMPLEMENTATION_PROMPT.md` | 4 — I | Implement fix |
 | `DOCUMENTATION_PROMPT.md` | After pass | Malleable doc updates + docs commit |
+
+**Lifecycle prompts** (not part of the per-task R→P→I loop — run at project/phase boundaries):
+
+| Lifecycle prompt | When to run |
+|------------------|-------------|
+| `PROJECT_INIT_PROMPT.md` | Once, to bootstrap a blank repo (Phase 0 vision interview + scaffold) |
+| `SPEC_PROMPT.md` | Before Track 1, to turn a rough idea into a written spec |
+| `OFFICE_HOURS_PROMPT.md` | Phase 0 / Track 1 Research — CEO-hat scope shaping |
+| `TEST_SETUP_PROMPT.md` | Once, to stand up the CI test gate (resolves ADR-002) |
+| `SHIP_PROMPT.md` | After Track 3 pass — plan-completion + scope-drift + PR |
+| `RETRO_PROMPT.md` | After ship — retro + persisted learnings |
+| `UPGRADE_TEMPLATE_PROMPT.md` | When a newer template version is available |
 
 ### Document Classification
 

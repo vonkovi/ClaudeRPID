@@ -1,0 +1,93 @@
+name: Connection Self-Check
+
+# Manual preflight for the template's GitHub <-> Claude wiring. ZERO side effects: it never
+# invokes Claude, opens issues/PRs, pushes commits, or spends Claude tokens. Run it from the
+# Actions tab (select this workflow -> "Run workflow") after adding the CLAUDE_CODE_OAUTH_TOKEN
+# secret, to confirm the plumbing before you rely on the autonomous loop.
+#
+# What it CAN verify:
+#   - the CLAUDE_CODE_OAUTH_TOKEN secret is present and non-empty
+#   - the GitHub API is reachable with the workflow token (so the SETUP.md smoke steps will work)
+#   - the Claude workflows exist and declare the write permissions they need
+#   - the pinned claude-code-action tag still resolves upstream
+# What it CANNOT verify (needs a live run -> see .github/SETUP.md):
+#   - that the token is VALID / unexpired (it's an Anthropic token, not a gh-checkable GitHub token)
+#   - that @claude mentions and the issue->PR loop actually behave end to end
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Secret present (CLAUDE_CODE_OAUTH_TOKEN)
+        env:
+          TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::CLAUDE_CODE_OAUTH_TOKEN is not set. Add it under Settings -> Secrets and variables -> Actions. Generate it with 'claude setup-token'."
+            exit 1
+          fi
+          echo "OK: CLAUDE_CODE_OAUTH_TOKEN is set (value masked; this checks presence only -- validity is proven by the live smoke test in .github/SETUP.md)."
+
+      - name: GitHub API reachable (workflow token)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api rate_limit >/dev/null && echo "OK: gh CLI + GITHUB_TOKEN can reach the GitHub API."
+
+      - name: Claude workflows present
+        run: |
+          missing=0
+          for f in claude.yml claude-issue-to-pr.yml claude-code-review.yml; do
+            if [ -f ".github/workflows/$f" ]; then
+              echo "OK: .github/workflows/$f"
+            else
+              echo "::error::missing .github/workflows/$f"
+              missing=1
+            fi
+          done
+          [ "$missing" -eq 0 ]
+
+      - name: Write permissions declared where needed
+        run: |
+          fail=0
+          for f in claude.yml claude-issue-to-pr.yml; do
+            for perm in "contents: write" "pull-requests: write" "issues: write"; do
+              if grep -qF "$perm" ".github/workflows/$f"; then
+                echo "OK: $f declares '$perm'"
+              else
+                echo "::error::$f is missing '$perm' -- @claude pushes / autonomous PR creation will fail."
+                fail=1
+              fi
+            done
+          done
+          [ "$fail" -eq 0 ]
+
+      - name: Pinned action tag resolves upstream
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Best-effort, network-dependent: warn (don't fail) if it can't be reached.
+          grep -hoE 'anthropics/claude-code-action@[^ "'"'"']+' .github/workflows/*.yml | sort -u | while read -r ref; do
+            tag="${ref##*@}"
+            if gh api "repos/anthropics/claude-code-action/git/ref/tags/$tag" >/dev/null 2>&1; then
+              echo "OK: $ref -> tag '$tag' exists upstream."
+            else
+              echo "::warning::could not resolve '$ref' upstream (network blip or the tag moved). Verify https://github.com/anthropics/claude-code-action/releases"
+            fi
+          done
+
+      - name: Summary
+        run: |
+          echo "Plumbing checks passed. Now run the one-time manual smoke test in .github/SETUP.md"
+          echo "to confirm the token is valid and the @claude / issue->PR loop actually fires."
