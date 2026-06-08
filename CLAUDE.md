@@ -291,8 +291,9 @@ every PR to `phase#`. A local pass with a red CI check is **not** a pass — the
 until CI is green. A stack-agnostic **skeleton ships at `.github/workflows/test.yml`**, but it
 intentionally **fails until you replace its placeholder command** with your real suite — finish
 it at phase 1 start (the runner + isolation choice is pre-registered as ADR-002 in `DECISIONS.md`;
-stack-specific tooling lives in `profiles/`). The other shipped workflows, `claude.yml` and
-`claude-code-review.yml`, are the Claude action and auto-review; neither runs tests.
+stack-specific tooling lives in `profiles/`). The other shipped workflows, `claude.yml` (the `@claude` action),
+`claude-code-review.yml` (auto-review), and `claude-issue-to-pr.yml` (label an issue `claude` →
+Claude runs ISSUE_MODE autonomously and opens a PR — the feedback loop), don't run tests.
 
 Each step has a copy-paste prompt in `prompts/`. Pick a **mode** first
 (`prompts/modes/FEATURE_MODE.md`, `ISSUE_MODE.md`, or `OVERNIGHT_MODE.md`), then run the track

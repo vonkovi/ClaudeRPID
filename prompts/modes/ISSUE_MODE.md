@@ -8,7 +8,9 @@ For interactive bug fixes initiated by a human, use FEATURE_MODE instead and ski
 
 ## Trigger Condition
 
-Fires when a GitHub issue is assigned to the Claude bot account. The trigger passes:
+Fired by the `.github/workflows/claude-issue-to-pr.yml` workflow when an issue is **labeled
+`claude`** (or assigned to the Claude bot account). That workflow runs this mode at `Review
+autonomy = auto` with write permissions and passes:
 - Issue number
 - Issue title
 - Issue body (full text)

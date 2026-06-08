@@ -1,0 +1,57 @@
+name: Claude Issue → PR
+
+# Autonomous issue handler — the feedback loop.
+# Label an issue `claude` and Claude reads it, runs the RPID loop autonomously via
+# prompts/modes/ISSUE_MODE.md, and opens a PR that closes the issue. You then review the PR
+# (comment `@claude <change>` to iterate — see claude.yml) and merge.
+#
+# Requires repo secret CLAUDE_CODE_OAUTH_TOKEN (`claude setup-token` or the GitHub App flow).
+#
+# Trigger is OPT-IN per issue via the `claude` label — controlled and cost-safe (Claude does not
+# run on every issue someone files). To run on EVERY new issue instead, swap the `on:`/`if:` lines
+# as noted below.
+
+on:
+  issues:
+    types: [labeled]          # opt-in: add the `claude` label to an issue to run it
+    # types: [opened]         # <- run on EVERY new issue: use this line instead, and the if: below
+
+jobs:
+  issue-to-pr:
+    if: github.event.label.name == 'claude'   # <- for [opened], replace this line with: if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write         # create the branch + commits
+      pull-requests: write    # open the PR
+      issues: write           # comment progress / blockers on the issue
+      id-token: write
+      actions: read           # read CI results on the PR
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0      # full history: branch from the default branch + regression baseline
+
+      - name: Run Claude Code (ISSUE_MODE)
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          additional_permissions: |
+            actions: read
+          prompt: |
+            You are running autonomously in CI to handle GitHub issue
+            #${{ github.event.issue.number }}: "${{ github.event.issue.title }}".
+
+            1. Read CLAUDE.md, then follow prompts/modes/ISSUE_MODE.md exactly.
+            2. Operate at Review autonomy = auto: run the RPID loop with no human gates — BUT stop
+               at any Hard Gate (a frozen/contract-file change, a high-confidence security finding,
+               escalation after the one allowed debug iteration, anything irreversible) and post a
+               comment on the issue explaining the block instead of proceeding.
+            3. Reproduce the issue with a test first, then fix the root cause (Iron Law: investigate
+               before fixing), run the full suite, and keep a SESSION_LOG.
+            4. When Track 3 passes, open a pull request to the default branch whose body says
+               "Closes #${{ github.event.issue.number }}", summarizing the root cause, the fix, and
+               the tests added. Comment the PR link back on the issue.
+            5. If you cannot reach a passing state, open a DRAFT PR with the work so far and comment
+               on the issue explaining exactly what a human needs to decide or provide.
+          claude_args: '--allowed-tools "Read,Edit,Write,Glob,Grep,Bash"'

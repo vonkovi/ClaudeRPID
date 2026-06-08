@@ -9,6 +9,21 @@ MINOR = additive (new prompts/flags → drop-in) · PATCH = wording/fixes.
 
 ---
 
+## 2.1.0 — Autonomous GitHub issue → PR
+
+Embeds GitHub triggers so the autonomous loop runs end to end — a real feedback loop.
+
+- **`.github/workflows/claude-issue-to-pr.yml`** — label an issue `claude` and Claude runs
+  `prompts/modes/ISSUE_MODE.md` autonomously (`Review autonomy = auto`): reproduce → fix (Iron Law)
+  → tests → open a PR that closes the issue. Hard Gates post a comment on the issue instead of
+  proceeding. One-line switch to run on every opened issue.
+- **`claude.yml`** bumped to write permissions so `@claude` comments can push changes to a PR (the
+  "user comes in and updates it" half of the loop), not just comment.
+- The full loop: issue → PR (auto-reviewed by `claude-code-review.yml`) → you review / `@claude`
+  iterate → merge.
+
+Migration: `.rpid/migrations/2.0-to-2.1.md`.
+
 ## 2.0.0 — GStack integration
 
 Folds Garry Tan's GStack methodology into the RPID loop as stack-agnostic, copy-paste prompts

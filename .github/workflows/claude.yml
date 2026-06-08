@@ -22,10 +22,13 @@ jobs:
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
     runs-on: ubuntu-latest
+    # Write access so @claude iterations can actually push changes to a PR / branch (the
+    # "user comes in and updates it" half of the feedback loop), not just comment. The action
+    # only acts on @claude mentions from users with write access to the repo, so this stays safe.
     permissions:
-      contents: read
-      pull-requests: read
-      issues: read
+      contents: write
+      pull-requests: write
+      issues: write
       id-token: write
       actions: read # Required for Claude to read CI results on PRs
     steps:
