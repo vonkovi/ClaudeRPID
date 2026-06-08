@@ -37,7 +37,7 @@ Read the relevant `.rpid/migrations/<from>-to-<to>.md`. Show the user, in plain 
 Ask to proceed (gated by Review autonomy). For multi-version jumps, apply each migration note in
 order.
 
-## Step 3 — apply, by ownership (`.rpid/ownership.md`)
+## Step 3 — apply, by ownership (`.rpid/OWNERSHIP.md`)
 
 - **Drop-in** files → add them.
 - **Replace** template-owned files and **fenced** `CLAUDE.md` regions → swap **only** those. For

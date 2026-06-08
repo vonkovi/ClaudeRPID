@@ -2,5 +2,5 @@
   "name": "rpid",
   "version": "2.1.0",
   "source": "https://github.com/vonkovi/ClaudeRPID",
-  "note": "Single source of truth for the template version. All template-system metadata lives in this .rpid/ directory: ownership.md (which files upgrade vs stay), CHANGELOG.md (template versions), migrations/ (per-version upgrade notes). A project instantiated from this template keeps `version` (the template version it is on) and `source` (the template's git URL); PROJECT_INIT writes them, UPGRADE_TEMPLATE bumps `version`."
+  "note": "Single source of truth for the template version. All template-system metadata lives in this .rpid/ directory: OWNERSHIP.md (which files upgrade vs stay), CHANGELOG.md (template versions), migrations/ (per-version upgrade notes). A project instantiated from this template keeps `version` (the template version it is on) and `source` (the template's git URL); PROJECT_INIT writes them, UPGRADE_TEMPLATE bumps `version`."
 }

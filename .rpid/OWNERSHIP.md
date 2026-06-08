@@ -1,4 +1,4 @@
-# Template Ownership Map (`.rpid/ownership.md`)
+# Template Ownership Map (`.rpid/OWNERSHIP.md`)
 
 Which files the **template** owns (safe to upgrade) vs which the **project** owns (never
 overwritten on upgrade). `prompts/UPGRADE_TEMPLATE_PROMPT.md` obeys this map.
@@ -11,7 +11,7 @@ overwritten on upgrade). `prompts/UPGRADE_TEMPLATE_PROMPT.md` obeys this map.
   see below)
 - `CLAUDE.md` — **only** the fenced methodology regions (`<!-- RPID:METHODOLOGY:* START/END -->`)
 - `START_HERE.md`, `docs/version1/phases/PHASE_MEMBER_TASK_TEMPLATE.md` — doc templates
-- `.rpid/ownership.md`, `.rpid/CHANGELOG.md`, `.rpid/migrations/**`, and the `version` field of
+- `.rpid/OWNERSHIP.md`, `.rpid/CHANGELOG.md`, `.rpid/migrations/**`, and the `version` field of
   `.rpid/template.json` — template metadata
 
 ## Project-owned (NEVER overwrite)
