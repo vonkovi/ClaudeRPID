@@ -1,0 +1,35 @@
+name: Template Check
+
+# The template's OWN test gate (this repo's Track 3). The repo ships no application code, so its
+# tests are integrity checks -- valid workflow YAML, resolvable cross-references, balanced
+# methodology fences, consistent version metadata. The checks live in tests/ and run identically
+# here and locally (`bash tests/run-all.sh`).
+#
+# NOTE: .github/workflows/test.yml is intentionally NOT this gate. It stays the failing,
+# stack-agnostic placeholder that a downstream project fills in. THIS workflow guards the template.
+# Make it a required status check: Settings -> Branches -> branch protection.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main, master, testing]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  template-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Ensure PyYAML (for workflow YAML validation)
+        run: python3 -c "import yaml" 2>/dev/null || pip install --quiet pyyaml
+
+      - name: Run template self-test suite
+        run: bash tests/run-all.sh
