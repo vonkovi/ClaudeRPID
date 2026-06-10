@@ -42,8 +42,9 @@ order.
 - **Drop-in** files → add them.
 - **Replace** template-owned files and **fenced** `CLAUDE.md` regions → swap **only** those. For
   `CLAUDE.md`, replace only each `<!-- RPID:METHODOLOGY:NAME START -->`…`END -->` block; leave
-  everything outside the fences. If a target file was locally customized, do a 3-way reconcile
-  (against `.rpid/baseline/` if the project keeps one) and surface each conflict as a decision.
+  everything outside the fences. If a target file was locally customized, do a 3-way reconcile —
+  the version it shipped as (fetch the project's current template version from the template
+  source's history) vs the new version vs the local file — and surface each conflict as a decision.
 - **Project-owned** files → never touch.
 - **Manual** steps → walk them one at a time (Hard Gates — always ask).
 

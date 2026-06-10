@@ -2,7 +2,7 @@
 
 **A golden-standard opinionated project scaffold that turns Claude Code from a fast coder into a disciplined engineer.**
 
-![working with claude](image.png)
+![working with claude](.github/readme-hero.png)
 
 Stack-agnostic · Solo or team · Research → Plan → Implement → Debug [RPID]
 

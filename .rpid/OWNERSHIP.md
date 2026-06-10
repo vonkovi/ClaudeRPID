@@ -23,8 +23,23 @@ overwritten on upgrade). `prompts/UPGRADE_TEMPLATE_PROMPT.md` obeys this map.
 - `MISSION.md`, `README.md` once filled for the project
 - `CLAUDE.md` **outside** the methodology fences — incl. Project, North Star, filled sections, the
   Build/Run commands, `## Testing`, `## Test Coverage`
-- `TESTING.md`, project config files
+- project config files
 - `.rpid/template.json` `source` (only `version` is template-managed)
+
+## Template-repo-only (never part of a project — delete at instantiation)
+
+Files that guard the **template repo's own integrity** and have no job downstream. They arrive in
+a new project via "Use this template"; `PROJECT_INIT` (STEP 7) deletes them, and `UPGRADE_TEMPLATE`
+never re-adds them:
+
+- `MAINTAINING.md` — the template-maintainer guide
+- `tests/check-*.sh`, `tests/run-all.sh`, `tests/README.md` — the template self-test suite
+  (a project's own tests may live in `tests/` afterwards; that's fine — these specific files go)
+- `.github/workflows/template-check.yml` — the self-test CI gate (a project's gate is `test.yml`)
+- `.github/readme-hero.png` — the template README's image (the README itself is rewritten at init)
+
+`START_HERE.md` is template-owned rather than template-repo-only: it has a downstream job
+(the first-run walkthrough) and is deleted by init only after it's done.
 
 ## Mixed-file rule
 

@@ -67,10 +67,13 @@ Every architectural decision is weighed against this.
 
 ```
 src/              ← {{primary code root — rename to frontend/ backend/ app/ as needed}}
-prompts/          ← RPID prompt library (modes/ + per-track prompts)
+prompts/          ← RPID prompt library (modes/ + per-track prompts + reviews/)
 docs/version1/          ← architecture, data model, planning, status — the living doc backbone
 docs/version1/phases/   ← phase + task scaffolding for the collaboration model
+profiles/         ← opt-in stack overlays — pick one at init/TEST_SETUP, then delete (profiles/README.md)
 legacy/           ← {{archived prior version, if any — delete if greenfield}}
+.github/workflows/ ← CI: the required test gate (test.yml) + @claude / auto-review / issue→PR actions
+.rpid/            ← template self-link + metadata (version, ownership map, changelog, migrations)
 CLAUDE.md         ← this file (admin-only)
 README.md         ← human-facing front page (admin-only)
 MISSION.md        ← purpose + success metrics (admin-only; optional)

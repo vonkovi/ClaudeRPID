@@ -23,6 +23,8 @@ or a library.
 | `.rpid/` | Template versioning + self-link (version, ownership map, CHANGELOG, migrations) — lets a project detect it's on an old template and upgrade via `prompts/UPGRADE_TEMPLATE_PROMPT.md` without touching your content. |
 | `docs/version1/` | The living documentation backbone — `STATUS`, `DECISIONS`, `ARCHITECTURE`, `DATA_MODEL`, `PLANNING`, `EXPERIMENTS`, `FUTURE_IMPLEMENTATIONS`. |
 | `docs/version1/phases/` | Phase + task scaffolding for the collaboration model. |
+| `.github/workflows/` | The GitHub half: the required CI test gate (`test.yml`, filled at Phase 1), the `@claude` action, PR auto-review, and the autonomous issue→PR loop. **One-time wiring:** add the `CLAUDE_CODE_OAUTH_TOKEN` secret and run the connection self-check — `.github/SETUP.md` walks you through it. |
+| `profiles/` | Opt-in stack overlays (test runner, CI, isolation). Pick the one matching your stack at init (or at `TEST_SETUP`), copy it in, then delete the folder — see `profiles/README.md`. |
 | `src/` | Your code root. Rename to `frontend/`, `backend/`, `app/`, etc. as needed. |
 
 ---
@@ -46,7 +48,7 @@ Work top-down:
 
 ---
 
-## The core philosophy in five sentences
+## The core philosophy in six sentences
 
 1. **Lost context and outdated context are the only real enemies** — every rule exists to prevent one of them.
 2. **`STATUS.md` is read at the start of every session and updated at the end** — it is the single source of "where are we."
@@ -68,4 +70,6 @@ project's nouns as you go. The header of each prompt says as much.
 ## First action
 
 Run `prompts/PROJECT_INIT_PROMPT.md` in a fresh session, **or** open `CLAUDE.md` and
-replace the `{{PLACEHOLDERS}}`. Then delete this `START_HERE.md` — it has done its job.
+replace the `{{PLACEHOLDERS}}`. Then wire up the GitHub side (`.github/SETUP.md` — the
+`CLAUDE_CODE_OAUTH_TOKEN` secret + connection self-check) and delete this `START_HERE.md` —
+it has done its job.
