@@ -9,6 +9,39 @@ MINOR = additive (new prompts/flags → drop-in) · PATCH = wording/fixes.
 
 ---
 
+## 2.3.0 — Gap-audit fixes: init rewrite, issue-loop consistency, ownership completeness
+
+Closes the v2.2 gap audit: every cross-file contradiction found is fixed, and each fixed drift
+class gains a self-test so it cannot silently return.
+
+- **`prompts/PROJECT_INIT_PROMPT.md` rewritten for the v2.x template.** It now *fills the shipped
+  scaffold* instead of re-stating (stale) copies of it: a new STEP 0 detects
+  template-instantiated vs blank repos (and offers `UPGRADE_TEMPLATE` instead of re-scaffolding),
+  STEP 4 defers to the shipped `PHASE_MEMBER_TASK_TEMPLATE.md` (the old inline copy had the
+  pre-2.0 two-commit discipline), STEP 5 fills `CLAUDE.md` placeholders and protects the
+  methodology fences (the old inline spec scaffolded a fence-less v1 CLAUDE.md that upgrades
+  couldn't touch), and a new STEP 7 finalizes what other docs always promised init does: rewrite
+  `README.md`, verify `.rpid/template.json` + the `STATUS.md` `Template:` line, apply/defer the
+  `profiles/` overlay, delete `START_HERE.md` and the template-repo-only files, and point at
+  `.github/SETUP.md`.
+- **Issue→PR loop consistency.** `ISSUE_MODE.md` and `claude-issue-to-pr.yml` now state the same
+  base-branch rule: the open `phase[N]` branch if one exists, else the default branch (they
+  previously contradicted each other).
+- **`.rpid/OWNERSHIP.md`: new "Template-repo-only" category** — `MAINTAINING.md`, the
+  `tests/check-*.sh` self-test suite, `template-check.yml`, and the README hero image are now
+  classified (delete at instantiation, never re-added by upgrade). Dropped the ghost `TESTING.md`
+  reference.
+- **Self-test suite extended:** `check-version.sh` now also checks `MAINTAINING.md`'s version
+  mention and that `CHANGELOG.md` has an entry for the current version; new `check-init.sh`
+  guards the init-prompt wiring, the four-commit discipline in the member-task template, and the
+  issue-loop base-branch agreement.
+- Doc fixes: `START_HERE.md` now covers `.github/workflows/` + `profiles/` and the one-time
+  GitHub wiring (`.github/SETUP.md`); CLAUDE.md's Repository Layout adds `profiles/`, `.github/`,
+  `.rpid/`; `UPGRADE_TEMPLATE`'s undocumented `.rpid/baseline/` mention replaced with a concrete
+  3-way-reconcile source; `image.png` moved to `.github/readme-hero.png`.
+
+Additive — drop-in, no migration required.
+
 ## 2.2.0 — Template self-test suite + GitHub connection check
 
 The template now guards its own integrity in CI, and ships a setup-time GitHub-plumbing check.

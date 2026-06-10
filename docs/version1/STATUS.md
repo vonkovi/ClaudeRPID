@@ -2,7 +2,7 @@
 
 _Update this file at the start and end of every session. This is the first doc to read when resuming work._
 
-`Template: rpid@2.2.0`  <!-- Template lineage. Read at session start, bumped by UPGRADE_TEMPLATE. Keep in sync with .rpid/template.json. -->
+`Template: rpid@2.3.0`  <!-- Template lineage. Read at session start, bumped by UPGRADE_TEMPLATE. Keep in sync with .rpid/template.json. -->
 
 
 ## North Star

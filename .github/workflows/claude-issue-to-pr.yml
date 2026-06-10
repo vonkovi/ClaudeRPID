@@ -30,7 +30,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0      # full history: branch from the default branch + regression baseline
+          fetch-depth: 0      # full history: find the base branch (open phase branch, else default) + regression baseline
 
       - name: Run Claude Code (ISSUE_MODE)
         uses: anthropics/claude-code-action@v1
@@ -49,7 +49,8 @@ jobs:
                comment on the issue explaining the block instead of proceeding.
             3. Reproduce the issue with a test first, then fix the root cause (Iron Law: investigate
                before fixing), run the full suite, and keep a SESSION_LOG.
-            4. When Track 3 passes, open a pull request to the default branch whose body says
+            4. When Track 3 passes, open a pull request to the base branch — the open phase[N]
+               branch if one exists, else the default branch (per ISSUE_MODE) — whose body says
                "Closes #${{ github.event.issue.number }}", summarizing the root cause, the fix, and
                the tests added. Comment the PR link back on the issue.
             5. If you cannot reach a passing state, open a DRAFT PR with the work so far and comment
