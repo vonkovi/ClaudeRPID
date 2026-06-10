@@ -1,28 +1,56 @@
-# Blank Project Initialization Prompt
+# Project Initialization Prompt (Phase 0)
 
-**Goal:** Scaffold the entire documentation structure, collaboration framework, and CLAUDE.md
-for a new blank repository. Use this at the very start of a project — before any code exists.
-The output is a living skeleton that every future Claude session can orient from immediately.
+**Goal:** Turn a freshly instantiated RPID template repo (or, as a fallback, a blank repo) into a
+living, project-specific scaffold: run the Phase 0 vision-alignment interview, fill every
+placeholder doc, wire the template metadata, and clean up the template's own artifacts.
 Stack-agnostic: works for any language, framework, or platform.
 
-Copy and paste the block below into a new Claude Code session in your blank repository.
+Copy and paste the block below into a new Claude Code session in your repository.
 
 ---
 
 ```
-You are initializing a new project repository. This project follows a specific organizational
-gold standard. Your job is to scaffold the entire documentation structure, collaboration
-framework, and CLAUDE.md from scratch. Do not write any application code — only structure,
-docs, and configuration files.
+You are initializing a new project repository that follows the RPID organizational gold standard.
+Your job: run the Phase 0 vision-alignment interview, then turn the template scaffold into this
+project's living documentation. Do not write any application code — only structure, docs, and
+configuration files.
 
 The project I am about to describe is: [DESCRIBE YOUR PROJECT IN 2-3 SENTENCES]
+
+---
+
+## STEP 0: Detect the Starting State (before anything else)
+
+Look at the repository and pick the flow:
+
+**Flow A — instantiated from the RPID template** (it has `prompts/`, `.rpid/template.json`, and a
+`CLAUDE.md` containing `{{...}}` placeholders). This is the normal case. Your job is to FILL the
+shipped files, never to recreate them:
+
+  - Edit placeholders in place. Never regenerate a shipped file from scratch.
+  - Never touch the `<!-- RPID:METHODOLOGY:* START -->`…`END` fenced blocks in CLAUDE.md — they
+    are template-owned and are swapped only by prompts/UPGRADE_TEMPLATE_PROMPT.md.
+  - If `.rpid/template.json` -> `source` is reachable and reports a NEWER version than this repo's
+    `version`, pause and offer to run prompts/UPGRADE_TEMPLATE_PROMPT.md first (upgrade, then
+    init). Offline or unreachable -> proceed on the current version; never guess.
+  - If the docs are ALREADY filled (no `{{...}}` placeholders remain), this project is already
+    initialized — do not re-scaffold anything. Offer the upgrade path if the template is behind;
+    otherwise report that and stop.
+
+**Flow B — blank repo** (no template files). Recommend instantiating from the template first
+("Use this template" on the template repo, or clone and copy), so this prompt can run as Flow A.
+Only if that is impossible: create the files described in the steps below from their content
+specs, and copy the `.rpid/` directory from the template source — without it the project has no
+versioned upgrade path. Flag that limitation explicitly if `.rpid/` cannot be copied.
+
+Everything below is written for Flow A; in Flow B, read "fill" as "create with this content".
 
 ---
 
 ## STEP 1: Vision Alignment Interview (this IS Phase 0)
 
 Phase 0 is ALWAYS vision alignment between the user and Claude — not coding, not even
-architecture. Before creating any file, run an **extensive, thorough interview** to pin down
+architecture. Before touching any file, run an **extensive, thorough interview** to pin down
 exactly what is being built and, just as importantly, what it is NOT. Do not rush to scaffold:
 this interview is the actual work of Phase 0.
 
@@ -56,35 +84,34 @@ DECISIONS.md, and FUTURE_IMPLEMENTATIONS.md in the steps below.
 
 ---
 
-## STEP 2: Create the Repository Structure
+## STEP 2: Verify / Adjust the Repository Structure
 
-Create the following folder structure (empty folders get a .gitkeep):
+The template ships the structure; verify it and adapt it to the project:
 
   docs/
     version1/               <- or v2, v3, etc. — whatever versioning scheme fits
       phases/
-        .gitkeep
-    legacy/                 <- only if there is a prior version to archive
-      .gitkeep
-  src/                      <- or frontend/, backend/, app/, etc. — your primary code root
-    .gitkeep
+        phase0/
+  src/                      <- rename to frontend/, backend/, app/, etc. if that fits better
+  legacy/                   <- create ONLY if there is a prior version to archive
 
-The key invariant: ALL architectural documentation lives under docs/[version]/. Code
-lives in its own top-level folder(s). Legacy/archived code is isolated, never mixed
-with active development.
+The key invariant: ALL architectural documentation lives under docs/[version]/. Code lives in its
+own top-level folder(s). Legacy/archived code is isolated, never mixed with active development.
+Empty folders get a .gitkeep.
 
 ---
 
-## STEP 3: Create the Core Documentation Files
+## STEP 3: Fill the Core Documentation Files
 
-Create all of these files. They are the permanent, living backbone of the project.
-Every file below is "malleable" — meaning it should be updated as the project evolves,
-but only by the right people at the right time (defined in STEP 6).
+Fill the shipped docs under docs/[version]/. They are the permanent, living backbone of the
+project. Every file below is "malleable" — updated as the project evolves, but only by the right
+people at the right time.
 
 ### docs/[version]/STATUS.md
 
-This is the FIRST file read at the start of every session and UPDATED at the end of
-every session. It must contain:
+This is the FIRST file read at the start of every session and UPDATED at the end of every
+session. **Keep the `Template: rpid@X.Y.Z` line at the top intact** — the session-start version
+check and the upgrade path depend on it. The file must contain:
 
 1.  North Star — the metric from STEP 1, written at the top.
 2.  Current Phase — which phase of work is active (from PLANNING.md).
@@ -126,9 +153,9 @@ Rules:
 - If a decision supersedes a prior one, note it explicitly in the text.
 - Inherited decisions from a prior version should be listed at the top under
   "Inherited from [version]" with a note if they have changed.
-- Pre-register a **Test Infrastructure** ADR (test runner + isolation: in-process vs Docker
-  vs full VM). Leave it Open until Phase 1 — it fills .github/workflows/test.yml and selects
-  the profiles/ overlay, if any.
+- Keep the pre-registered **Test Infrastructure** ADR (ADR-002: test runner + isolation —
+  in-process vs Docker vs full VM) Open until Phase 1 — it fills .github/workflows/test.yml and
+  selects the profiles/ overlay, if any.
 
 ### docs/[version]/ARCHITECTURE.md
 
@@ -191,6 +218,9 @@ you did not predict. Structure:
 - Status: Pending / Running / Completed
 - Result (filled in after running)
 
+Not a research/benchmarking project? Leave the file with its structure and a one-line note that
+it is unused — do not delete it (the doc backbone stays complete).
+
 ### docs/[version]/FUTURE_IMPLEMENTATIONS.md
 
 The explicit deferred features list. Every feature that is deliberately out of scope
@@ -202,19 +232,28 @@ in this file immediately. Rules:
 
 ---
 
-## STEP 4: Create the Phase Documentation Structure
+## STEP 4: Phase Documentation Structure
 
-For each phase in PLANNING.md, create:
+The member-task template ships at **docs/[version]/phases/PHASE_MEMBER_TASK_TEMPLATE.md** — it is
+the authoritative format (task blocks, ownership zones, frozen-contract list, and the four-commit
+discipline `impl:` -> `test:` -> `fix:` -> `docs:`). Do NOT restate or fork its content: at each
+phase start, generate that phase's PHASE[N]_MEMBER_TASK.md from the shipped template.
+
+Per-phase structure (created as phases begin, not all up front):
 
   docs/[version]/phases/
-    PHASE_MEMBER_TASK_TEMPLATE.md   <- template (see below)
+    PHASE_MEMBER_TASK_TEMPLATE.md     <- ships with the template; the authoritative format
     phase[N]/
-      PHASE[N]_MEMBER_TASK.md       <- generated at phase start, admin-only edits
-      task[NN]_[slug]/              <- one folder per task
+      PHASE[N]_MEMBER_TASK.md         <- generated at phase start, admin-only edits
+      task[NN]_[slug]/                <- one folder per task; all RPID docs live here
         RESEARCH_PHASE[N]_TASK[NN].md
         PLANNING_PHASE[N]_TASK[NN].md
-        ITERATION1/                 <- only created if debugging is needed
+        TEST_RESEARCH_PHASE[N]_TASK[NN].md
+        TEST_PLAN_PHASE[N]_TASK[NN].md
+        SESSION_LOG_PHASE[N]_TASK[NN].md
+        ITERATION1/                   <- only created if debugging is needed
           DEBUG_RESEARCH_PHASE[N]_TASK[NN].md
+          DEBUG_PLAN_PHASE[N]_TASK[NN].md
 
 Naming conventions (strictly enforced):
 - Phase folders: phase0, phase1, phase2 — no leading zeros on phase number
@@ -222,175 +261,28 @@ Naming conventions (strictly enforced):
 - Branch names: [username]/phase[N]_task[NN]_[slug]
 - Doc names: RESEARCH_PHASE[N]_TASK[NN].md — slug NOT repeated in doc name
 
-PHASE_MEMBER_TASK_TEMPLATE.md must contain:
-
-  # Phase [#]: [Phase Name] — Member Tasks
-
-  _Admin-only edits. Generated by Claude at phase start; updated only by admin thereafter._
-
-  ## Phase Overview
-  | Field | Value |
-  |-------|-------|
-  | Phase | [#] |
-  | Phase branch | phase[#] |
-  | Created from | testing |
-  | Collab integrator | [name] |
-  | Status | In Progress |
-  | Admin sign-off | [ ] |
-
-  ## Members
-  | Member | Role | Assigned Tasks |
-  |--------|------|---------------|
-  | [name] | collab_integrator | [tasks] |
-  | [name] | member | [tasks] |
-
-  ## Task Assignments
-  [one block per task — see task block format below]
-
-  ## Frozen Shared Contract Files
-  No member edits these files unilaterally. All changes go through collab_integrator
-  via REQUEST#_PHASE[N]_TASK[NN].md.
-
-  | File | Reason Frozen |
-  |------|--------------|
-  | [file] | [reason] |
-
-  ## Contract Change Log
-  | Request Doc | Filed By | Filed On | Applied On | Status |
-  |-------------|----------|----------|------------|--------|
-
-  ## Phase Completion Checklist
-  - [ ] All task items checked off
-  - [ ] All RPID docs committed as permanent artifacts
-  - [ ] Malleable docs updated (ARCHITECTURE.md, DATA_MODEL.md, STATUS.md, PLANNING.md)
-  - [ ] No pending contract change requests
-  - [ ] Admin sign-off
-  - [ ] phase[#] merged to testing
-  - [ ] phase[#+1] branch created
-  - [ ] phase[#] branch deleted (docs remain — NEVER delete docs/[version]/phases/phase[#]/)
-
-Task block format inside PHASE[N]_MEMBER_TASK.md:
-
-  ### Task [NN]: [Task Name] (maps to PLANNING.md [N][a])
-
-  - **Owner:** [member name]
-  - **Branch:** [username]/phase[N]_task[NN]_[slug]
-  - **Folder:** docs/[version]/phases/phase[N]/task[NN]_[slug]/
-  - **Ownership zone:** [explicit list of files/folders this member owns exclusively]
-  - **Hybrid:** [Yes — touches frontend + backend / No]
-  - **Status:** [ ] Not started
-
-  **Items (from PLANNING.md):**
-  - [ ] 1. [item]
-
-  **RPID docs:**
-  - [ ] RESEARCH_PHASE[N]_TASK[NN].md
-  - [ ] PLANNING_PHASE[N]_TASK[NN].md
-  - [ ] ITERATION1/DEBUG_RESEARCH_PHASE[N]_TASK[NN].md (if needed)
-
-  **Commits (two per task, always in this order, never combined):**
-  - [ ] impl: phase[N]_task[NN]   <- code changes ONLY
-  - [ ] docs: phase[N]_task[NN]   <- malleable doc updates ONLY
-
 ---
 
-## STEP 5: Create CLAUDE.md
+## STEP 5: Fill CLAUDE.md
 
-CLAUDE.md is the first file Claude reads. It is non-malleable — only the admin edits it.
-It must contain the following sections (adapt content to the project):
+CLAUDE.md ships with the template and is the first file Claude reads. It is non-malleable — only
+the admin edits it after this. Fill its placeholders; do not restructure it:
 
-  # CLAUDE.md
+- **Project Settings** — set the admin username; adjust the Review-autonomy dial if asked.
+- **Project + North Star** — 2-3 sentences (including what it is NOT) and the metric from STEP 1.
+- **Repository Layout** — make the tree match the real folders (renamed src/, legacy/ if present).
+- **Active Development** — the one-sentence current-phase status.
+- **Build / Run commands** — only commands that are actually valid right now. If the toolchain is
+  not set up yet, write exactly that; never list placeholder commands that fail.
+- **Architecture Summary** — mirror the key concepts from ARCHITECTURE.md.
+- **Testing / Test Coverage** — leave for prompts/TEST_SETUP_PROMPT.md at Phase 1 start; do not
+  invent a test command.
 
-  This file provides guidance to Claude Code (claude.ai/code) when working with
-  code in this repository.
-
-  ## Project
-
-  [2-3 sentences: what the project does, what it is NOT (common misconception),
-  and the North Star metric in bold.]
-
-  ---
-
-  ## Repository Layout
-
-  [ASCII tree of top-level folders with one-line descriptions of each]
-  [State explicitly which folder is active development vs. archived/legacy]
-
-  ---
-
-  ## Active Development: [version]
-
-  **[Current phase status in one sentence.]**
-
-  Read docs/[version]/STATUS.md first when resuming work — it tracks current
-  phase, blockers, and next actions. Update it at the end of every session.
-
-  ### Key Docs
-
-  | File | Purpose |
-  |------|---------|
-  | docs/[version]/STATUS.md | Current phase, blockers, next actions — read at start, update at end |
-  | docs/[version]/DECISIONS.md | ADR log — authoritative for all locked decisions |
-  | docs/[version]/ARCHITECTURE.md | [what it covers] |
-  | docs/[version]/DATA_MODEL.md | [authoritative for all backend implementation] |
-  | docs/[version]/PLANNING.md | [N]-phase checklist with numbered tasks |
-
-  ### Build/Run Commands
-
-  [Only list commands that are actually valid for the current phase. If the toolchain
-  is not yet set up, say so explicitly rather than listing placeholder commands.
-  Include: how to build, how to run locally, how to run the type-checker or linter,
-  how to run tests, and how to run a single test in isolation.]
-
-  ---
-
-  ## [Architecture Summary Section — name it after the core architectural concept]
-
-  [Mirror the key concepts from ARCHITECTURE.md here as a quick reference:]
-    - The main loop / core flow
-    - The component model (table: Component | Responsibility | When it fires)
-    - Key invariants (bullet list — these are the "laws" of the system)
-    - Performance model summary
-
-  ---
-
-  ## Collaboration
-
-  > [Insert the one-line core collaboration principle]
-
-  ### Roles
-  | Role | Responsibility | Authority |
-  |------|---------------|-----------|
-
-  ### Branching Hierarchy
-
-    main
-      └── testing
-            └── phase[N]
-                  └── [username]/phase[N]_task[NN]_[slug]
-
-  ### Golden Rules
-  1. Task isolation — members only do assigned tasks.
-  2. Doc isolation — members only write in their own task folder.
-  3. No lost context — all RPID docs are permanent artifacts. Never delete them.
-  4. No outdated context — every doc change must be reflected across all related docs.
-  5. RPID loop — Research → Plan → Implement → Debug. Always in this order.
-  6. Contract files — shared contracts need collab_integrator before any edit.
-
-  ### RPID Loop
-  [Describe R→P→I→D in detail including the two-commit rule and the required CI test gate
-   on PRs (Track 3) — the full test suite runs as a required GitHub Actions check on every
-   PR; author the gate workflow at phase 1 start]
-
-  ### Document Classification
-  [Non-malleable / Malleable / Phase-scoped / Task-scoped]
-
-  ### Shared Contract Change Process
-  [REQUEST doc process — what, why, how, impact on others]
-
-  ### Phase Lifecycle
-  | Event | Who | Action |
-  |-------|-----|--------|
+Hard rules:
+- Never edit anything inside the `<!-- RPID:METHODOLOGY:* START/END -->` fences.
+- Never reintroduce a `{{...}}` token into a section that has been filled.
+- (Flow B only) Copy CLAUDE.md from the template source and then fill it — generating it from
+  memory loses the methodology fences and breaks future upgrades.
 
 ---
 
@@ -398,7 +290,7 @@ It must contain the following sections (adapt content to the project):
 
 Set up branches in this order:
 
-1. Ensure main exists with an initial commit (the scaffold you just created).
+1. Ensure main exists with an initial commit (the filled scaffold).
 2. Create testing from main.
 3. Create phase0 from testing.
 4. The current working branch should be [your-username]/phase0 or just phase0
@@ -408,24 +300,51 @@ Do NOT create phase1 yet — it is created only after phase0 is complete and mer
 
 ---
 
-## STEP 7: Verify the Scaffold
+## STEP 7: Finalize Template Metadata & Clean Up
 
-After creating all files, run through this checklist:
+The template leaves artifacts that belong to the template, not to your project. Finish the job:
 
-- [ ] CLAUDE.md exists at repo root
-- [ ] docs/[version]/STATUS.md exists and has all 10 required sections
-- [ ] docs/[version]/DECISIONS.md exists with at least one ADR
-- [ ] docs/[version]/ARCHITECTURE.md exists
-- [ ] docs/[version]/DATA_MODEL.md (or equivalent) exists
-- [ ] docs/[version]/PLANNING.md exists with at least Phase 0 fully specified
-- [ ] docs/[version]/EXPERIMENTS.md exists
-- [ ] docs/[version]/FUTURE_IMPLEMENTATIONS.md exists
-- [ ] docs/[version]/phases/PHASE_MEMBER_TASK_TEMPLATE.md exists
-- [ ] docs/[version]/phases/phase0/ folder exists
-- [ ] Branch structure: main → testing → phase0 (or username/phase0)
-- [ ] No application code written yet (Phase 0 is planning, not coding)
-- [ ] STATUS.md "Next Actions" section has a clear first action
-- [ ] CI test-gate skeleton (.github/workflows/test.yml) present and flagged to be filled at phase 1 — it fails until its placeholder command is replaced (Track 3 gate; choice recorded as ADR-002)
+1. **profiles/** — if the stack is already decided, follow profiles/README.md: copy the matching
+   overlay into the repo root, record the choice as ADR-002, then **delete the profiles/ folder**.
+   If the stack is still open, leave profiles/ in place and add "pick profile at TEST_SETUP" to
+   STATUS.md Next Actions.
+2. **README.md** — rewrite it as the project's own front page (what it is, why it exists, how to
+   get started). The shipped README describes the template; none of that should survive.
+3. **.rpid/template.json** — verify `version` (the template version this project is on) and
+   `source` (the template's git URL) are present; verify STATUS.md's `Template: rpid@X.Y.Z` line
+   matches `version`. (Flow B: write both now if `.rpid/` was copied.)
+4. **Delete the template-repo-only files** — listed in `.rpid/OWNERSHIP.md` under
+   "Template-repo-only": MAINTAINING.md, the template self-test suite (tests/check-*.sh,
+   tests/run-all.sh, tests/README.md), .github/workflows/template-check.yml, and the template
+   README image (.github/readme-hero.png). They guard the template's integrity, not yours.
+5. **Delete START_HERE.md** — it has done its job.
+6. **Point the user at .github/SETUP.md** to wire the GitHub<->Claude workflows (the
+   CLAUDE_CODE_OAUTH_TOKEN secret + the connection self-check). Do not run it for them — it needs
+   repo-settings access only they have.
+
+---
+
+## STEP 8: Verify
+
+After all steps, run through this checklist:
+
+- [ ] CLAUDE.md has no `{{...}}` placeholders left in Project, North Star, Repository Layout, or
+      Active Development; Build/Run is real or explicitly "not set up yet"
+- [ ] CLAUDE.md methodology fences are intact (every START has its END, content untouched)
+- [ ] docs/[version]/STATUS.md has all 10 required sections AND the `Template: rpid@X.Y.Z` line
+      matching .rpid/template.json
+- [ ] docs/[version]/DECISIONS.md has at least one ADR + the Open ADR-002 (Test Infrastructure)
+- [ ] docs/[version]/ARCHITECTURE.md, DATA_MODEL.md (or equivalent), PLANNING.md (Phase 0 fully
+      specified), EXPERIMENTS.md, FUTURE_IMPLEMENTATIONS.md are filled
+- [ ] docs/[version]/phases/PHASE_MEMBER_TASK_TEMPLATE.md exists; docs/[version]/phases/phase0/ exists
+- [ ] Branch structure: main -> testing -> phase0 (or username/phase0)
+- [ ] No application code written (Phase 0 is planning, not coding)
+- [ ] STATUS.md "Next Actions" has a clear first action
+- [ ] CI test-gate skeleton (.github/workflows/test.yml) present and flagged to be filled at
+      phase 1 — it fails until its placeholder command is replaced (Track 3 gate; ADR-002)
+- [ ] README.md rewritten for the project; START_HERE.md deleted
+- [ ] Template-repo-only files deleted (MAINTAINING.md, tests/ self-checks, template-check.yml)
+- [ ] profiles/ either applied + deleted, or deferred with a STATUS.md note
 
 ---
 
@@ -435,13 +354,14 @@ After creating all files, run through this checklist:
 - Do NOT invent architecture decisions — leave ADRs as "Open" and list options with
   trade-offs. I will make the decisions.
 - Do NOT pre-fill experiment hypotheses — leave EXPERIMENTS.md with structure and a placeholder.
+- Do NOT touch the CLAUDE.md methodology fences, and never reintroduce a `{{...}}` token.
 - Every doc you write should be specific to this project. Use the project description I gave
   you to make everything concrete and real — no generic [placeholder] filler.
 - If you are unsure about a project-specific detail, write an open ADR entry rather than guessing.
 - STATUS.md "Current Phase" should read: "Phase 0 — [Project Name] Vision Alignment and
   Architecture Design."
 - STATUS.md "Next Actions" should be the literal first 3-5 things to do to make the project real.
-- After creating all files, show a brief summary of what was created and ask:
+- After all steps, show a brief summary of what was created and ask:
   "What is the first architectural decision we should lock — pick one ADR to close together
   before Phase 0 work begins."
 ```

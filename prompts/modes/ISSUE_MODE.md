@@ -25,7 +25,7 @@ Before any track work:
 1. Read CLAUDE.md.
 2. Read the assigned GitHub issue in full using the GitHub tools. Quote the reported behavior verbatim — this is what reproduction tests must catch.
 3. Run the full test suite. Record output as the **regression baseline** in `SESSION_LOG_PHASE[N]_TASK[NN].md` before touching anything.
-4. Create branch automatically: `claude/issue-[NNN]-[slug]` from the current `phase[N]` branch. The slug is a 2–4 word snake_case summary of the issue title.
+4. Create branch automatically: `claude/issue-[NNN]-[slug]` from the **base branch** — the open `phase[N]` branch if one exists, else the repository default branch (the usual case for autonomous CI runs). The slug is a 2–4 word snake_case summary of the issue title.
 5. Post a comment on the GitHub issue: "Picked up. Working on branch `claude/issue-[NNN]-[slug]`."
 
 If the branch already exists (issue was previously attempted): read the existing SESSION_LOG to understand prior run history before proceeding.
@@ -86,7 +86,7 @@ Run the full suite again. Compare against the regression baseline.
 
 **If all tests pass:**
 - Append PASS entry to SESSION_LOG.
-- Open PR: `claude/issue-[NNN]-[slug]` → `phase[N]`. PR description includes: issue number, root cause (one sentence), fix summary, test names added.
+- Open PR: `claude/issue-[NNN]-[slug]` → the base branch it was created from (the open `phase[N]` branch if one exists, else the default branch). PR description includes: issue number, root cause (one sentence), fix summary, test names added.
 - Post to GitHub issue: "Fixed in PR #[NNN]. Reproduction tests added. Regression baseline preserved."
 
 **If tests still fail after one debug iteration:**
