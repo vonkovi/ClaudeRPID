@@ -5,7 +5,7 @@
 
 ## What this repo is
 
-This repository **is the RPID template itself** (`rpid`, currently `2.1.0` — see
+This repository **is the RPID template itself** (`rpid`, currently `2.3.0` — see
 `.rpid/template.json`). It is the *source product* that gets copied into other repos as a starting
 scaffold. **It is not a project built from the template.** That one fact reframes everything below.
 
@@ -86,7 +86,10 @@ as shell checks, run by `template-check.yml` (and locally via `bash tests/run-al
 - `check-workflows.sh` — shipped workflows exist; all workflow YAML parses
 - `check-links.sh` — every path-qualified file reference in the Markdown resolves
 - `check-fences.sh` — `RPID:METHODOLOGY:*` fences are balanced (UPGRADE depends on this)
-- `check-version.sh` — `.rpid/template.json` and `STATUS.md` agree on the version
+- `check-version.sh` — `.rpid/template.json`, `STATUS.md`, and `MAINTAINING.md` agree on the
+  version, and `CHANGELOG.md` has an entry for it
+- `check-init.sh` — `PROJECT_INIT` references the shipped files it finalizes (no inline forks);
+  `ISSUE_MODE` and `claude-issue-to-pr.yml` agree on the base-branch rule
 
 They exist to catch — automatically — the drift class that used to be caught only by hand
 (orphaned prompts, a missing `Template:` line, an ownership map citing a section that doesn't
